@@ -1,7 +1,7 @@
 <template>
     <div id="app" :style="{ 'overflow': this.$route.path == '/' ? 'hidden' : 'auto' }">
         <transition :name="transitionName">
-            <router-view class="child-view" />
+            <router-view :class="[isTransition ? 'child-view' : '']" />
         </transition>
     </div>
 </template>
@@ -11,18 +11,22 @@
         name: 'App',
         data(){
             return {
-                transitionName: 'slide-left'
+                transitionName: '',
+                isTransition: false
             }
         },
-        watch: {
+        /*watch: {
           '$route' (to, from) {
-            let toLen = to.path.split('/').length;
-            let fromLen = from.path.split('/').length;
-            const toDepth = to.path == '/' ? parseInt(toLen) - 1 : parseInt(toLen);
-            const fromDepth = from.path == '/' ? parseInt(fromLen) - 1 : parseInt(fromLen);
-            this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left';
+            console.log(to.path);
+            if(to.path == '/addEqu') {
+                this.transitionName = 'slide-left';
+                this.isTransition = true;
+            }else if(from.path == '/addEqu') {
+                this.transitionName = 'slide-right';
+                this.isTransition = true;
+            }
           }
-        }
+        }*/
     }
 </script>
 
@@ -30,6 +34,14 @@
     * {
         padding: 0;
         margin: 0;
+    }
+    a:link, a:hover, a:visited {
+        color:#2c3e50;
+        text-decoration: none;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        -webkit-user-select: none;
+        -moz-user-focus: none;
+        -moz-user-select: none;
     }
     #app {
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -41,7 +53,7 @@
         max-width: 480px;
     }
     .child-view {
-      transition: all .6s ease;
+      transition: all 30.6s ease;
     }
     .slide-left-enter, .slide-right-leave-active {
       -webkit-transform: translate(100%, 0);
@@ -89,6 +101,9 @@
             position: relative;
             left: 50%;
             margin-left: -240px;
+        }
+        .smooth {
+            padding-bottom: 0;
         }
     }
 </style>

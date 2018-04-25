@@ -52,7 +52,7 @@
 		},
 		methods: {
 			routerback: function () {
-				this.$router.go()
+				this.$router.back()
 			}
 		}
 	}

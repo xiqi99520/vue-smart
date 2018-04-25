@@ -11,6 +11,7 @@
         			<p>{{ item.name }}</p>
         			<p class='date' v-text="item.date ? item.date+' 开启' : '关闭' "></p>
         		</div>
+                <div class="icon-more" :style="'backgroundImage:url('+ iconMore +')'"></div>
         	</div>
         </div>
     </div>	
@@ -21,6 +22,11 @@
         props: {
             bindingEqu: Array,
             basicInfo: Object
+        },
+        data(){
+            return {
+                iconMore: require('../../assets/common/more.png')
+            }
         }
 	}
 </script>
@@ -54,6 +60,7 @@
 		overflow-y: auto;
     }
     .equipment-group .sec {
+        position: relative;
     	background: rgba(255,255,255,.9);
         border-radius: 6px;
         padding: 1.4rem 0 1.4rem .8rem;
@@ -61,7 +68,7 @@
     }
     .equ-info p {
     	font-size: .8rem;
-    	line-height: 1.3rem;
+    	line-height: 1rem;
     }
     .equ-info .date {
     	color: #b1b0b0;
@@ -69,9 +76,18 @@
     	top: .17rem;
     }
     .equ-icon {
-    	width: 3rem;
+    	width: 2.3rem;
     	background-repeat: no-repeat;
     	background-size: contain;
     	margin-right: .4rem;
+    }
+    .icon-more {
+        width: .9rem;
+        height: .3rem;
+        position: absolute;
+        right: .6rem;
+        top: .7rem;
+        background-size: contain;
+        background-repeat: no-repeat;
     }
 </style>

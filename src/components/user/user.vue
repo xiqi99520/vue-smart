@@ -24,8 +24,10 @@
 		<div class="menu-list">
 			<ul class="clear">
 				<li v-for="item in menuList" class="pull-left trisection sub-menu">
-					<img class="menu-icon" :src="item.icon" alt="">
-					<p>{{item.title}}</p>
+					<router-link :to="item.url">
+						<img class="menu-icon" :src="item.icon" alt="">
+						<p>{{item.title}}</p>
+					</router-link>
 				</li>
 			</ul>
 		</div>
@@ -42,15 +44,51 @@
 				userPic: require('../../assets/user/user.png'),
 				curName: '我的',
 				menuList: [
-					{ icon: require('../../assets/user/shared_device.png'), title: '共享设备'},
-					{ icon: require('../../assets/user/my_family.png'), title: '我的家人'},
-					{ icon: require('../../assets/user/host.png'), title: '主机'},
-					{ icon: require('../../assets/user/sign.png'), title: '积分签到'},
-					{ icon: require('../../assets/user/supplies.png'), title: '我要营销'},
-					{ icon: require('../../assets/user/opinion.png'), title: '乐居商城'},
-					{ icon: require('../../assets/user/problem.png'), title: '设置'},
-					{ icon: require('../../assets/user/us.png'), title: '房屋管理'},
-					{ icon: require('../../assets/user/Set_up.png'), title: '推荐有礼'}
+					{ 
+						icon: require('../../assets/user/shared_device.png'), 
+						title: '共享设备',
+						url: '/'
+					},
+					{ 
+						icon: require('../../assets/user/my_family.png'), 
+						title: '我的家人',
+						url: '/'
+					},
+					{ 
+						icon: require('../../assets/user/host.png'), 
+						title: '主机',
+						url: '/'
+					},
+					{ 
+						icon: require('../../assets/user/sign.png'), 
+						title: '积分签到',
+						url: '/'
+					},
+					{ 
+						icon: require('../../assets/user/icon_markting.png'), 
+						title: '我要营销',
+						url: '/'
+					},
+					{ 
+						icon: require('../../assets/user/icon_shop.png'), 
+						title: '乐居商城',
+						url: '/'
+					},
+					{ 
+						icon: require('../../assets/user/Set_up.png'), 
+						title: '设置',
+						url: '/setting'
+					},
+					{ 
+						icon: require('../../assets/user/icon_manage.png'),
+						title: '房屋管理',
+						url: '/'
+					},
+					{ 
+						icon: require('../../assets/user/icon_gift.png'), 
+						title: '推荐有礼',
+						url: '/'
+					}
 				]
 			}
 		},

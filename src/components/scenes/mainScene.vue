@@ -1,84 +1,100 @@
 <template>
-	<div class="scene-linkage">
-        <div class="flex">
-            <div class="scene-module">场景</div>
-            <div class="linkage-module">联动</div>
+    <div>
+        <div class="index" :style="bgStyle">
+            <top></top>
+            <basicData></basicData>
+            <div class="scene-linkage">
+                <div class="clear">
+                    <div :class="['nav-menu','pull-left','scene-module',curUrl == 0 ? 'router-active': '']">
+                        <router-link to="/scene">场景</router-link>
+                    </div>
+                    <div :class="['nav-menu','pull-right','linkage-module',curUrl == 1 ? 'router-active': '']">
+                        <router-link to="/linkage">联动</router-link>
+                    </div>
+                </div>
+                <div :class="['line',curUrl == 1 ? 'line-r': '']"></div>
+                <router-view></router-view>
+            </div>
         </div>
-        <router-view />
     </div>
 </template>
 
 <script>
+    import top from '../common/headerModule'
+    import basicData from '../common/basicData'
 	export default {
-		props: {
-			curUrl: Number
-		},
 		data(){
 			return {
-				sideNavIcons: [
-                    {
-                        pic: require('../../assets/index/icon_default.png'),
-                        active: require('../../assets/index/active_default.png'),
-                        url: '/'
-                    },
-                    {
-                        pic: require('../../assets/index/icon_living.png'),
-                        active: require('../../assets/index/active_living.png'),
-                        url: '/home'
-                    },
-                    {
-                        pic: require('../../assets/index/icon_bed.png'),
-                        active: require('../../assets/index/active_bed.png'),
-                        url: '/bed'
-                    },
-                    {
-                        pic: require('../../assets/index/icon_study.png'),
-                        active: require('../../assets/index/active_study.png'),
-                        url: '/study'
-                    },
-                    {
-                        pic: require('../../assets/index/icon_room.png'),
-                        active: require('../../assets/index/active_room.png'),
-                        url: '/room'
-                    },
-                ]
+                bgStyle: {
+                    backgroundImage: "url(" + require("../../assets/index/index_bg.png") + ")"
+                },
+				curName: '场景联动'
 			}
-		}
+		},
+        components: {
+            top,
+            basicData
+        },
+        computed: {
+            curUrl: function () {
+                switch( this.$route.fullPath ) {
+                    case '/scene' :
+                        return 0;
+                        break;
+                    default :
+                        return 1;
+                        break;
+                }
+            }
+        }
 	}
 </script>
 
 <style scoped>
-	.side-nav {
+	.index {
         width: 100%;
-        height: 57vh;
+        height: 100vh;
         position: absolute;
-        bottom: 4.5rem;
-    }
-    .side-nav ul {
-        width: 3rem;
-        background: rgba(255,255,255,.9);
-        height: 95%;
-        border-radius: 6px;
-        margin-left: .7rem;
-        position: absolute;
-        top: 1rem;
-    }
-    .side-nav li {
-        display: block;
-        height: calc(100%/5);
-        background-repeat: no-repeat;
-        background-size: 1.4rem;
+        top: 0;
+        left: 50%;
+        z-index: 1;
+        -webkit-transform: translateX(-50%);
+        transform: translateX(-50%);
         background-position: center;
+        background-size: cover;
     }
-    .side-nav li a {
-        display: inline-block;
+    .scene-linkage {
+        width: 100%;
+        min-height: calc(100% - 14rem);
+        background-color: #fff;
+        position: relative;
+        top: 3rem;
+    }
+    .scene-linkage .nav-menu {
+        width: 49%;
+        border-bottom: 1px solid #999999;
+    }
+    .scene-linkage a {
+        display: block;
         width: 100%;
         height: 100%;
+        padding: .8rem 0;
     }
-    .side-nav .first {
-        border-bottom: 1px solid #cccccc;
+    .scene-linkage .router-active .router-link-active {
+        color: #ff9c00;
     }
-    .side-nav .last {
-        border-top: 1px solid #cccccc;
+    .line {
+        width: 49%;
+        border-top: 1px solid #ff9c00;
+        position: relative;
+        top: -.1rem;
+        transform: translateX(0);
+        -webkit-transition: all .4s;
+        -moz-transition: all .4s;
+        -o-transition: all .4s;
+        transition: all .4s;
+    }
+    .line-r {
+        transform: translateX(104%);
     }
 </style>

@@ -1,6 +1,6 @@
 <template>
-	<div>
-		<ul class="common-nav clear">
+	<div class="common-nav">
+		<ul class="clear">
 			<li v-for="item in navInfo" :class="['pull-left',item.title == curname ? 'active' : '']">
 				<router-link :to="item.url">
 					<img :src="[item.title == curname ? item.active : item.icon]" alt="">
@@ -29,13 +29,13 @@
 						icon: require('../../assets/index/icon_action.png'), 
 						active: require('../../assets/index/active_action.png'), 
 						title: '场景联动',
-						url: '/'
+						url: '/scene'
 					},
 					{ 
 						icon: require('../../assets/index/icon_safe.png'), 
 						active: require('../../assets/index/active_safe.png'), 
 						title: '安防',
-						url: '/'
+						url: '/security'
 					},
 					{ 
 						icon: require('../../assets/index/icon_mine.png'), 
@@ -59,21 +59,26 @@
 	    left: 0;
 	    right: 0;
 		background-color: #fff;
-		padding: .6rem 0;
+		padding: .6rem 0 .5rem 0;
 		border-top: 1px solid #f2f2f2;
+		z-index: 9;
 	}
 	.common-nav a {	
+		display: inline-block;
+		width: 100%;
+   		height: 100%;
 		text-decoration: none;
 		color: #000;
+
 	}
 	.common-nav .active p {
 		color: #ff9c00;
 	}
 	.common-nav li {
 		width: 25%;
-		font-size: .8rem;
+		font-size: .7rem;
 	}
 	.common-nav img {
-		height: 1.4rem;
+		height: 1.1rem;
 	}
 </style>
