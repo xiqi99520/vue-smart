@@ -3,13 +3,15 @@
 		<a class="goback" @click="goback"></a>
 		<img class="pull-left arrow-left" :src="backIcon" alt="">
 		{{ title }}
+		<a href="/create" class="right-menu pull-right" v-if="rightMenu">{{ rightMenu }}</a>
 	</div>
 </template>
 
 <script>
 	export default {
 		props: {
-			title: String
+			title: String,
+			rightMenu: String
 		},
 		data() {
 			return {
@@ -47,5 +49,18 @@
 		width: .5rem;
 		position: relative;
 		left: .8rem;
+	}
+	.right-menu {
+		width: 3.6rem;
+		height: 1.4rem;
+		line-height: 1.4rem;
+		font-size: .8rem;
+		color: #ff9c00;
+		border-radius: 20px;
+		border: 1px solid #ff9c00;
+		position: absolute;
+		top: .55rem;
+		right: .6rem;
+
 	}
 </style>

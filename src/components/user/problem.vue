@@ -3,6 +3,7 @@
 		<publicHead :title="msg"></publicHead>
 		<ul>
 			<li class="clear single" v-for="item in securityList">
+				<router-link :to="item.url"></router-link>
 				<p class="pull-left title">{{ item.title }}</p>
 				<img class="pull-right" :src="iconRight" alt="" />
 			</li>
@@ -19,22 +20,28 @@
 				msg: '常见问题',
 				securityList: [
 					{
-						title: '1. 智能乐居APP如何添加新设备?'
+						title: '1. 智能乐居APP如何添加新设备?',
+						url: '/problemDetail/0'
 					},
 					{
-						title: '2. 什么是场景模式?'
+						title: '2. 什么是场景模式?',
+						url: '/problemDetail/1'
 					},
 					{
-						title: '3. 什么是设备联动?'
+						title: '3. 什么是设备联动?',
+						url: '/problemDetail/2'
 					},
 					{
-						title: '4. 什么是设备安防?'
+						title: '4. 什么是设备安防?',
+						url: '/problemDetail/3'
 					},
 					{
-						title: '5. 设备离线怎么办?'
+						title: '5. 设备离线怎么办?',
+						url: '/problemDetail/4'
 					},
 					{
-						title: '6. 怎样共享设备?'
+						title: '6. 怎样共享设备?',
+						url: '/problemDetail/5'
 					}
 				]
 			}
@@ -47,8 +54,18 @@
 
 <style scoped>
 	.single {
+		position: relative;
 		padding: 1rem;
 		border-bottom: 1px solid #f2f2f2;
+	}
+	.single a {
+		display: block;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		left: 0;
+		top: 0;
+		z-index: 9;
 	}
 	.single img {
 		width:.5rem;

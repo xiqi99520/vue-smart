@@ -72,7 +72,7 @@
 					{ 
 						icon: require('../../assets/user/icon_shop.png'), 
 						title: '乐居商城',
-						url: '/'
+						url: '/shop'
 					},
 					{ 
 						icon: require('../../assets/user/Set_up.png'), 
@@ -82,7 +82,7 @@
 					{ 
 						icon: require('../../assets/user/icon_manage.png'),
 						title: '房屋管理',
-						url: '/'
+						url: '/choiceHouse'
 					},
 					{ 
 						icon: require('../../assets/user/icon_gift.png'), 

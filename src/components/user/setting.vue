@@ -21,7 +21,7 @@
 				securityList: [
 					{
 						title: '关于我们',
-						url: '/'
+						url: '/about'
 					},
 					{
 						title: '意见反馈',
@@ -29,7 +29,7 @@
 					},
 					{
 						title: '修改密码',
-						url: '/'
+						url: '/password/1'
 					},
 					{
 						title: '常见问题',

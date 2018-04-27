@@ -1,5 +1,5 @@
 <template>
-    <div id="app" :style="{ 'overflow': this.$route.path == '/' ? 'hidden' : 'auto' }">
+    <div id="app" v-cloak :style="{ 'overflow': this.$route.path == '/' ? 'hidden' : 'auto' }">
         <transition :name="transitionName">
             <router-view :class="[isTransition ? 'child-view' : '']" />
         </transition>
@@ -14,7 +14,7 @@
                 transitionName: '',
                 isTransition: false
             }
-        },
+        }
         /*watch: {
           '$route' (to, from) {
             console.log(to.path);
@@ -52,6 +52,7 @@
         height: 100vh;
         max-width: 480px;
     }
+    [v-cloak]{ display:none} 
     .child-view {
       transition: all 30.6s ease;
     }
