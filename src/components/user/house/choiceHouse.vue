@@ -13,23 +13,23 @@
 </template>
 
 <script>
-	import publicHead from '../common/publicHeader'
+	import publicHead from '../../common/publicHeader'
 	export default {
 		data() {
 			return {
-				iconRight: require('../../assets/common/arrow_right.png'),
+				iconRight: require('../../../assets/common/arrow_right.png'),
 				msg: '选择房屋',
 				rightMenu: '创建',
 				securityList: [
 					{
 						title: '我的房屋(默认)',
 						url: '/houseManage/我的房屋(默认)',
-						src: require('../../assets/index/avatar.png')
+						src: require('../../../assets/index/avatar.png')
 					},
 					{
 						title: '我的房屋1',
 						url: '/houseManage/我的房屋1',
-						src: require('../../assets/index/avatar.png')
+						src: require('../../../assets/index/avatar.png')
 					}
 				]
 			}
@@ -72,5 +72,6 @@
 	.choice .house-avatar {
 		width: 2.4rem;
 		height: 2.4rem;
+		border-radius: 50%;
 	}
 </style>

@@ -42,25 +42,25 @@
 </template>
 
 <script>
-	import publicHead from '../common/publicHeader'
+	import publicHead from '../../common/publicHeader'
 	export default {
 		data() {
 			return {
-				iconRight: require('../../assets/common/arrow_right.png'),
+				iconRight: require('../../../assets/common/arrow_right.png'),
 				msg: '关于我们',
-				first: require('../../assets/user/about/first.png'),
-				second: require('../../assets/user/about/second.png'),
-				third: require('../../assets/user/about/third.png'),
-				fourth: require('../../assets/user/about/fourth.png'),
-				fifth: require('../../assets/user/about/fifth.png'),
-				sixth: require('../../assets/user/about/sixth.png'),
-				seventh: require('../../assets/user/about/seventh.png'),
-				eighth: require('../../assets/user/about/eighth.png'),
-				ninth: require('../../assets/user/about/ninth.png'),
-				tenth: require('../../assets/user/about/tenth.png'),
-				eleventh: require('../../assets/user/about/eleventh.png'),
-				twelfth: require('../../assets/user/about/twelfth.png'),
-				thirteenth: require('../../assets/user/about/thirteenth.png')
+				first: require('../../../assets/user/about/first.png'),
+				second: require('../../../assets/user/about/second.png'),
+				third: require('../../../assets/user/about/third.png'),
+				fourth: require('../../../assets/user/about/fourth.png'),
+				fifth: require('../../../assets/user/about/fifth.png'),
+				sixth: require('../../../assets/user/about/sixth.png'),
+				seventh: require('../../../assets/user/about/seventh.png'),
+				eighth: require('../../../assets/user/about/eighth.png'),
+				ninth: require('../../../assets/user/about/ninth.png'),
+				tenth: require('../../../assets/user/about/tenth.png'),
+				eleventh: require('../../../assets/user/about/eleventh.png'),
+				twelfth: require('../../../assets/user/about/twelfth.png'),
+				thirteenth: require('../../../assets/user/about/thirteenth.png')
 			}
 		},
 		components: {

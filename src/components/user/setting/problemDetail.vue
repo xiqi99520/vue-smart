@@ -9,11 +9,11 @@
 </template>
 
 <script>
-	import publicHead from '../common/publicHeader'
+	import publicHead from '../../common/publicHeader'
 	export default {
 		data() {
 			return {
-				iconRight: require('../../assets/common/arrow_right.png'),
+				iconRight: require('../../../assets/common/arrow_right.png'),
 				msg: '常见问题详情',
 				cur: this.$route.params.id || 0,
 				details: [
@@ -58,12 +58,13 @@
 		margin-top: .8rem;
 	}
 	.detail h5 {
+		font-size: .9rem;
 		text-align: left;
 		padding: .8rem .8rem .4rem .8rem;
 	}
 	.detail p {
 		width: 96%;
-		font-size: .7rem;
+		font-size: .8rem;
 		line-height: 1.3rem;
 		text-align: left;
 		margin: auto;

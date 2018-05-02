@@ -1,9 +1,10 @@
 <template>
 	<div class="common-header clear">
-		<a class="goback" @click="goback"></a>
+		<a class="goback" @click="goback(backurl)"></a>
 		<img class="pull-left arrow-left" :src="backIcon" alt="">
 		{{ title }}
 		<a href="/create" class="right-menu pull-right" v-if="rightMenu">{{ rightMenu }}</a>
+		<img class="news" v-if="news" :src="news" @click="goNews" alt="">
 	</div>
 </template>
 
@@ -11,7 +12,9 @@
 	export default {
 		props: {
 			title: String,
-			rightMenu: String
+			rightMenu: String,
+			news: String,
+			backurl: String
 		},
 		data() {
 			return {
@@ -19,8 +22,15 @@
 			}
 		},
 		methods: {
-			goback(){
-				this.$router.back();
+			goback(value){
+				if(value){
+					this.$router.push(value);
+				}else{
+					this.$router.back();
+				}
+			},
+			goNews(){
+				this.$router.push('/inviteInfo');
 			}
 		}
 	}
@@ -61,6 +71,10 @@
 		position: absolute;
 		top: .55rem;
 		right: .6rem;
-
+	}
+	.news {
+		width: .9rem;
+		position: absolute;
+		right: .8rem;
 	}
 </style>

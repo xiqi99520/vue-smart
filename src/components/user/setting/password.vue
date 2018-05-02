@@ -15,7 +15,7 @@
 </template>
 
 <script>
-	import publicHead from '../common/publicHeader'
+	import publicHead from '../../common/publicHeader'
 	export default {
 		data() {
 			return {

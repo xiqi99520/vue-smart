@@ -25,15 +25,15 @@
 </template>
 
 <script>
-	import publicHead from '../common/publicHeader'
+	import publicHead from '../../common/publicHeader'
 	export default {
 		data() {
 			return {
-				iconRight: require('../../assets/common/arrow_right.png'),
+				iconRight: require('../../../assets/common/arrow_right.png'),
 				msg: '房屋管理',
 				rightMenu: '创建',
 				curName: this.$route.params.name,
-				curHouseSrc: require('../../assets/index/avatar.png')
+				curHouseSrc: require('../../../assets/index/avatar.png')
 			}
 		},
 		components: {

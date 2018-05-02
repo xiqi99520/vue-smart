@@ -9,12 +9,12 @@
 </template>
 
 <script>
-	import publicHead from '../common/publicHeader'
+	import publicHead from '../../common/publicHeader'
 	export default {
 		data() {
 			return {
 				msg: '意见反馈',
-				opinionBg: require('../../assets/user/complain.png')
+				opinionBg: require('../../../assets/user/complain.png')
 			}
 		},
 		components: {

@@ -18,16 +18,30 @@ const Security = r => require.ensure([], () => r(require('@/components/security/
 const SecuritySetting = r => require.ensure([], () => r(require('@/components/security/securitySetting')), 'Security')
 
 const User = r => require.ensure([], () => r(require('@/components/user/user')), 'User')
-const Setting = r => require.ensure([], () => r(require('@/components/user/setting')), 'User')
-const Problem = r => require.ensure([], () => r(require('@/components/user/problem')), 'User')
-const ProblemDetail = r => require.ensure([], () => r(require('@/components/user/problemDetail')), 'User')
-const Opinion = r => require.ensure([], () => r(require('@/components/user/opinion')), 'User')
-const About = r => require.ensure([], () => r(require('@/components/user/about')), 'User')
-const Password = r => require.ensure([], () => r(require('@/components/user/password')), 'User')
+
+const Setting = r => require.ensure([], () => r(require('@/components/user/setting/setting')), 'User')
+const About = r => require.ensure([], () => r(require('@/components/user/setting/about')), 'User')
+const Opinion = r => require.ensure([], () => r(require('@/components/user/setting/opinion')), 'User')
+const Password = r => require.ensure([], () => r(require('@/components/user/setting/password')), 'User')
+const Problem = r => require.ensure([], () => r(require('@/components/user/setting/problem')), 'User')
+const ProblemDetail = r => require.ensure([], () => r(require('@/components/user/setting/problemDetail')), 'User')
+
+const choiceHouse = r => require.ensure([], () => r(require('@/components/user/house/choiceHouse')), 'User')
+const houseManage = r => require.ensure([], () => r(require('@/components/user/house/houseManage')), 'User')
+const Create = r => require.ensure([], () => r(require('@/components/user/house/create')), 'User')
+
 const Shop = r => require.ensure([], () => r(require('@/components/user/shop')), 'User')
-const choiceHouse = r => require.ensure([], () => r(require('@/components/user/choiceHouse')), 'User')
-const houseManage = r => require.ensure([], () => r(require('@/components/user/houseManage')), 'User')
-const Create = r => require.ensure([], () => r(require('@/components/user/create')), 'User')
+
+const Myfamily = r => require.ensure([], () => r(require('@/components/user/myfamily/myfamily')), 'User')
+const InviteInfo = r => require.ensure([], () => r(require('@/components/user/myfamily/inviteInfo')), 'User')
+const Addfamily = r => require.ensure([], () => r(require('@/components/user/myfamily/addfamily')), 'User')
+
+const Share = r => require.ensure([], () => r(require('@/components/user/share/shareList')), 'User')
+const ShareTo = r => require.ensure([], () => r(require('@/components/user/share/sharekinds/shareTo')), 'User')
+const AgreeShare = r => require.ensure([], () => r(require('@/components/user/share/sharekinds/agreeShare')), 'User')
+const Addshare = r => require.ensure([], () => r(require('@/components/user/share/addshare')), 'User')
+
+const Recommend = r => require.ensure([], () => r(require('@/components/user/recommend/recommend')), 'User')
 
 Vue.use(Router)
 
@@ -128,6 +142,39 @@ export default new Router({
 			path: '/create',
 			name: 'Create',
 			component: Create
+		}, {
+			path: '/myfamily',
+			name: 'Myfamily',
+			component: Myfamily
+		}, {
+			path: '/inviteInfo',
+			name: 'InviteInfo',
+			component: InviteInfo
+		}, {
+			path: '/addfamily',
+			name: 'Addfamily',
+			component: Addfamily
+		}, {
+			path: '/share',
+			name: 'Share',
+			component: Share,
+			children: [
+				{
+					path: '/',
+					component: ShareTo
+				}, {
+					path: '/accept',
+					component: AgreeShare
+				}
+			]
+		}, {
+			path: '/addshare',
+			name: 'Addshare',
+			component: Addshare
+		}, {
+			path: '/recommend',
+			name: 'Recommend',
+			component: Recommend
 		}
 	]
 })

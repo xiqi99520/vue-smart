@@ -12,11 +12,11 @@
 </template>
 
 <script>
-	import publicHead from '../common/publicHeader'
+	import publicHead from '../../common/publicHeader'
 	export default {
 		data() {
 			return {
-				iconRight: require('../../assets/common/arrow_right.png'),
+				iconRight: require('../../../assets/common/arrow_right.png'),
 				msg: '常见问题',
 				securityList: [
 					{

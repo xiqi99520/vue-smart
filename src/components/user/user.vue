@@ -47,12 +47,12 @@
 					{ 
 						icon: require('../../assets/user/shared_device.png'), 
 						title: '共享设备',
-						url: '/'
+						url: '/share'
 					},
 					{ 
 						icon: require('../../assets/user/my_family.png'), 
 						title: '我的家人',
-						url: '/'
+						url: '/myfamily'
 					},
 					{ 
 						icon: require('../../assets/user/host.png'), 
@@ -87,7 +87,7 @@
 					{ 
 						icon: require('../../assets/user/icon_gift.png'), 
 						title: '推荐有礼',
-						url: '/'
+						url: '/recommend'
 					}
 				]
 			}
@@ -130,6 +130,11 @@
 	.menu-list {
 		width: 94%;
 		margin: auto;
+	}
+	.menu-list a {
+		display: block;
+		width: 100%;
+		height: 100%;
 	}
 	.sub-menu {
 		margin-top: 2.2rem;
