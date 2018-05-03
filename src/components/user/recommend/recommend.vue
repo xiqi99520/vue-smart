@@ -1,22 +1,23 @@
 <template>
 	<div>
 		<publicHead :title="msg"></publicHead>
-		<div class="recommend-bg" :style="'backgroundImage: url('+ recommendBg +')'"></div>
-		<div class="invite">
-			<p class="header">邀请<span>16</span>人,奖励价值<span>147</span>元充电宝</p>
-			<img class="giftPic" :src="giftPic" alt="">
-			<p class="person-num">成功邀请人数</p>
-			<div class="invite-num" :style="'backgroundImage: url('+ recommendNumBg +')'">0</div>
-			<p class="invite-code">我的邀请码: 18888</p>
-			<span class="rule">查看奖励规则 &gt;</span>
-			<div class="btn-group clear">
-				<button class="pull-left btn">分享二维码</button>
-				<button class="pull-right btn">马上邀请好友</button>
-			</div>
-			<router-link class="recruit" to="/">产品体验官招募 &gt;</router-link>
-			<div class="integral clear">
-				<div class="pull-left">已获得积分: <span class="num">0</span>分</div>
-				<div class="pull-right btn-find">查看 &gt;</div>
+		<div class="recommend-bg" :style="'backgroundImage: url('+ recommendBg +')'">
+			<div class="invite">
+				<p class="header">邀请<span>16</span>人,奖励价值<span>147</span>元充电宝</p>
+				<img class="giftPic" :src="giftPic" alt="">
+				<p class="person-num">成功邀请人数</p>
+				<div class="invite-num" :style="'backgroundImage: url('+ recommendNumBg +')'">0</div>
+				<p class="invite-code">我的邀请码: 18888</p>
+				<router-link class="rule" to="/rule">查看奖励规则 &gt;</router-link>
+				<div class="btn-group clear">
+					<button class="pull-left btn"><router-link to="/recommendQrcode">分享二维码</router-link></button>
+					<button class="pull-right btn">马上邀请好友</button>
+				</div>
+				<router-link class="recruit" to="/productRecruit">产品体验官招募 &gt;</router-link>
+				<div class="integral clear">
+					<div class="pull-left">已获得积分: <span class="num">0</span>分</div>
+					<div class="pull-right btn-find"><router-link to="/recommendIntegral">查看 &gt;</router-link></div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -58,7 +59,7 @@
 		padding-top: 1.6rem;
 		margin-bottom: 4rem;
 		position: relative;
-		top: 3.5rem;
+		top: 6.5rem;
 	}
 	.invite .header {
 		font-size: .95rem;
@@ -108,6 +109,13 @@
 		border-radius: 20px;
     	background-color: #ff9c00;
 	}
+	.btn-group .btn a {
+		display: inline-block;
+		width: 100%;
+		height: 100%;
+		line-height: 2.4rem;
+		color: #fff;
+	}
 	.recruit {
 		display: block;
 		width: 84%;
@@ -128,7 +136,7 @@
 		font-size: 1.2rem;
 		color: #ff9c00;
 	}
-	.integral .btn-find {
+	.integral .btn-find a {
 		color: #999;
 	}
 </style>

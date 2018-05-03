@@ -42,6 +42,11 @@ const AgreeShare = r => require.ensure([], () => r(require('@/components/user/sh
 const Addshare = r => require.ensure([], () => r(require('@/components/user/share/addshare')), 'User')
 
 const Recommend = r => require.ensure([], () => r(require('@/components/user/recommend/recommend')), 'User')
+const Rule = r => require.ensure([], () => r(require('@/components/user/recommend/recommendRule')), 'User')
+const ProductRecruit = r => require.ensure([], () => r(require('@/components/user/recommend/productRecruit')), 'User')
+const RecommendIntegral = r => require.ensure([], () => r(require('@/components/user/recommend/recommendIntegral')), 'User')
+const RecommendQrcode = r => require.ensure([], () => r(require('@/components/user/recommend/recommendQrcode')), 'User')
+
 
 Vue.use(Router)
 
@@ -175,6 +180,22 @@ export default new Router({
 			path: '/recommend',
 			name: 'Recommend',
 			component: Recommend
+		}, {
+			path: '/rule',
+			name: 'Rule',
+			component: Rule
+		}, {
+			path: '/productRecruit',
+			name: 'ProductRecruit',
+			component: ProductRecruit
+		}, {
+			path: '/recommendIntegral',
+			name: 'RecommendIntegral',
+			component: RecommendIntegral
+		}, {
+			path: '/recommendQrcode',
+			name: 'RecommendQrcode',
+			component: RecommendQrcode
 		}
 	]
 })

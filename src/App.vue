@@ -15,18 +15,6 @@
                 isTransition: false
             }
         }
-        /*watch: {
-          '$route' (to, from) {
-            console.log(to.path);
-            if(to.path == '/addEqu') {
-                this.transitionName = 'slide-left';
-                this.isTransition = true;
-            }else if(from.path == '/addEqu') {
-                this.transitionName = 'slide-right';
-                this.isTransition = true;
-            }
-          }
-        }*/
     }
 </script>
 
@@ -63,6 +51,18 @@
     .slide-left-leave-active, .slide-right-enter {
       -webkit-transform: translate(-100%, 0);
       transform: translate(-100%, 0);
+    }
+    .shade {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        left: 0;
+        top: 0;
+        background: rgba(0,0,0,.5);
+        z-index: -1;
+    }
+    .hide {
+        display: none;
     }
     .flex {
         display: flex;
