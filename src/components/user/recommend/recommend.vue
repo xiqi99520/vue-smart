@@ -43,23 +43,25 @@
 <style scoped>
 	.recommend-bg {
 		width: 100%;
-		height: 100vh;
-		position: absolute;
-		left: 0;
-		top: 0;
-		background-size: 100%;
-		background-repeat: no-repeat;
+	    position: relative;
+	    left: 0;
+	    top: 0;
+	    background-size: 100%;
+	    background-repeat: no-repeat;
+	    padding-bottom: 4rem;
+	    padding-top: 6.5rem;
 	}
 	.invite {
 		width: 86%;
-		box-shadow: 1px 1px 10px #ccc;
-		border-radius: 10px;
-		background-color: #fff;
-		margin: auto;
-		padding-top: 1.6rem;
-		margin-bottom: 4rem;
-		position: relative;
-		top: 6.5rem;
+	    -webkit-box-shadow: 1px 1px 10px #ccc;
+	    box-shadow: 1px 1px 10px #ccc;
+	    border-radius: 10px;
+	    background-color: #fff;
+	    position: relative;
+	    left: 50%;
+	    -webkit-transform: translateX(-50%);
+	    transform: translateX(-50%);
+	    padding-top: 1.6rem;
 	}
 	.invite .header {
 		font-size: .95rem;
@@ -104,6 +106,7 @@
 	.btn-group .btn {
 		width: 45%;
 		height: 2.4rem;
+		font-size: .9rem;
 		color: #fff;
 		border: none;
 		border-radius: 20px;

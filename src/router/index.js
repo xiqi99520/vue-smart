@@ -47,6 +47,9 @@ const ProductRecruit = r => require.ensure([], () => r(require('@/components/use
 const RecommendIntegral = r => require.ensure([], () => r(require('@/components/user/recommend/recommendIntegral')), 'User')
 const RecommendQrcode = r => require.ensure([], () => r(require('@/components/user/recommend/recommendQrcode')), 'User')
 
+const Host = r => require.ensure([], () => r(require('@/components/user/host')), 'User')
+
+const Integral = r => require.ensure([], () => r(require('@/components/user/integral/integral')), 'User')
 
 Vue.use(Router)
 
@@ -196,6 +199,14 @@ export default new Router({
 			path: '/recommendQrcode',
 			name: 'RecommendQrcode',
 			component: RecommendQrcode
+		}, {
+			path: '/host',
+			name: 'Host',
+			component: Host
+		}, {
+			path: '/integral',
+			name: 'Integral',
+			component: Integral
 		}
 	]
 })

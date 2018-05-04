@@ -57,12 +57,12 @@
 					{ 
 						icon: require('../../assets/user/host.png'), 
 						title: '主机',
-						url: '/'
+						url: '/host'
 					},
 					{ 
 						icon: require('../../assets/user/sign.png'), 
 						title: '积分签到',
-						url: '/'
+						url: '/integral'
 					},
 					{ 
 						icon: require('../../assets/user/icon_markting.png'), 

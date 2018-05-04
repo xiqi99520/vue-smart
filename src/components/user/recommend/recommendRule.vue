@@ -63,7 +63,7 @@
 		border-radius: 10px;
 		margin: auto;
 		padding-top: 1.6rem;
-		margin-bottom: 4rem;
+		padding-bottom: 5rem;
 		position: relative;
 		top: 4.2rem;
 	}
@@ -82,7 +82,6 @@
 		width: 100%;
 	}
 	.rule-cont {
-		margin-top: .5rem;
 		box-shadow: 1px 1px 10px #ccc;
 		border-bottom-left-radius: 12px;
 		border-bottom-right-radius: 12px;
@@ -114,6 +113,6 @@
 	.rule-cont .icon-footer {
 		width: 100%;
 		position: relative;
-		top: -.69rem;
+		top: -.3rem;
 	}
 </style>

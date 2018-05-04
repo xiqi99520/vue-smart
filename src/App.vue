@@ -1,8 +1,10 @@
 <template>
     <div id="app" v-cloak :style="{ 'overflow': this.$route.path == '/' ? 'hidden' : 'auto' }">
-        <transition :name="transitionName">
-            <router-view :class="[isTransition ? 'child-view' : '']" />
-        </transition>
+        <keep-alive>
+            <transition :name="transitionName">
+                <router-view :class="[isTransition ? 'child-view' : '']" />
+            </transition>
+        </keep-alive>
     </div>
 </template>
 
@@ -81,6 +83,9 @@
     }
     .trisection {
         width: calc(100%/3);
+    }
+    .six-equals {
+        width: calc(100%/6);
     }
     .smooth {
         min-height: 100vh;
