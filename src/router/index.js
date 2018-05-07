@@ -50,6 +50,12 @@ const RecommendQrcode = r => require.ensure([], () => r(require('@/components/us
 const Host = r => require.ensure([], () => r(require('@/components/user/host')), 'User')
 
 const Integral = r => require.ensure([], () => r(require('@/components/user/integral/integral')), 'User')
+const SignInRule = r => require.ensure([], () => r(require('@/components/user/integral/signInRule')), 'User')
+const GoodsList = r => require.ensure([], () => r(require('@/components/user/integral/goodsList')), 'User')
+const GoodsDetail = r => require.ensure([], () => r(require('@/components/user/integral/goodsDetail')), 'User')
+const Order = r => require.ensure([], () => r(require('@/components/user/integral/order')), 'User')
+const AddAddress = r => require.ensure([], () => r(require('@/components/user/integral/addAddress')), 'User')
+const Schedule = r => require.ensure([], () => r(require('@/components/user/integral/schedule')), 'User')
 
 Vue.use(Router)
 
@@ -207,6 +213,30 @@ export default new Router({
 			path: '/integral',
 			name: 'Integral',
 			component: Integral
+		}, {
+			path: '/signInRule',
+			name: 'SignInRule',
+			component: SignInRule
+		}, {
+			path: '/goodsList',
+			name: 'GoodsList',
+			component: GoodsList
+		}, {
+			path: '/goodsDetail',
+			name: 'GoodsDetail',
+			component: GoodsDetail
+		}, {
+			path: '/order',
+			name: 'Order',
+			component: Order
+		}, {
+			path: '/addAddress',
+			name: 'AddAddress',
+			component: AddAddress
+		}, {
+			path: '/schedule',
+			name: 'Schedule',
+			component: Schedule
 		}
 	]
 })

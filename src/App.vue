@@ -64,7 +64,7 @@
         z-index: -1;
     }
     .hide {
-        display: none;
+        display: none!important;
     }
     .flex {
         display: flex;
@@ -77,6 +77,9 @@
     }
     .pull-right {
         float: right;
+    }
+    .white {
+        background-color: #fff;
     }
     li{
         list-style: none;

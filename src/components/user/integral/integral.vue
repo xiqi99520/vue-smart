@@ -4,7 +4,7 @@
 			<h5>您的可用积分</h5>
 			<p class="integral-num">8</p>
 			<p class="recording">已经连续签到0天</p>
-			<div class="rule"><router-link to="/">规则 &gt;</router-link></div>
+			<div class="rule"><router-link to="/signInRule">规则 &gt;</router-link></div>
 		</div>
 		<div class="sign-in" :style="'backgroundImage: url('+ signBg +')'">
 			<div class="sign-in-cont">
@@ -51,19 +51,19 @@
 			</div>
 		</div>
 		<div class="exchange">
-			<div class="header">积分兑好礼<span class="more">更多 &gt;</span></div>
+			<div class="header">积分兑好礼<router-link to="/goodsList" class="more">更多 &gt;</router-link></div>
 			<div class="gift-list flex">
 				<div class="gift">
 					<div class="pic" :style="'backgroundImage: url('+ product +')'"></div>
 					<p>扫地机器人</p>
 					<p class="val">1积分</p>
-					<button>立即兑换</button>
+					<router-link class="btn-exchange" to="/goodsDetail">立即兑换</router-link>
 				</div>
 				<div class="gift">
 					<div class="pic" :style="'backgroundImage: url('+ product1 +')'"></div>
 					<p>扫地机器人</p>
 					<p class="val">1积分</p>
-					<button>立即兑换</button>
+					<router-link class="btn-exchange" to="/goodsDetail">立即兑换</router-link>
 				</div>
 			</div>
 		</div>
@@ -179,6 +179,7 @@
 	    border: none;
 	    border-radius: 2rem;
 		background-color: #ff9c00;
+		outline: none;
 	}
 	.exchange {
 		padding-bottom: 3rem;
@@ -220,7 +221,8 @@
 	.gift-list .gift .val {
 		color: #ec3a40;
 	}
-	.gift-list .gift button {
+	.gift-list .gift .btn-exchange {
+		display: inline-block;
 		width: 80%;
 		height: 2.4rem;
 		line-height: 2.4rem;
