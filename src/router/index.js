@@ -56,6 +56,7 @@ const GoodsDetail = r => require.ensure([], () => r(require('@/components/user/i
 const Order = r => require.ensure([], () => r(require('@/components/user/integral/order')), 'User')
 const AddAddress = r => require.ensure([], () => r(require('@/components/user/integral/addAddress')), 'User')
 const Schedule = r => require.ensure([], () => r(require('@/components/user/integral/schedule')), 'User')
+const EditAddress = r => require.ensure([], () => r(require('@/components/user/integral/editAddress')), 'User')
 
 Vue.use(Router)
 
@@ -233,6 +234,10 @@ export default new Router({
 			path: '/addAddress',
 			name: 'AddAddress',
 			component: AddAddress
+		},{
+			path: '/editAddress',
+			name: 'EditAddress',
+			component: EditAddress
 		}, {
 			path: '/schedule',
 			name: 'Schedule',

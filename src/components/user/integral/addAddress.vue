@@ -17,12 +17,12 @@
 						<span class="pull-right">手机: 138xxxx8888</span>
 					</p>
 				</div>
-				<div class="icon-footer">
+				<router-link to="/editAddress" class="icon-footer">
 					<img :src="iconEdit" alt="">
-				</div>
+				</router-link>
 			</div>
 		</div>
-		<div class="btn-add">+ 添加地址</div>
+		<router-link to="/editAddress" class="btn-add">+ 添加地址</router-link>
 	</div>
 </template>
 
@@ -59,6 +59,7 @@
 		color: #999;
 	}
 	.btn-add {
+		display: block;
 		width: 100%;
 		height: 3rem;
 		line-height: 3rem;
@@ -94,6 +95,7 @@
 		width: 80%;
 	}
 	.address .icon-footer {
+		display: block;
 		width: 10%;
 		text-align: right;
 	}

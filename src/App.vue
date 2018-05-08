@@ -105,6 +105,12 @@
         font-size: 1rem;
         border-bottom: 1px solid #f2f2f2;
     }
+    .distpicker-address-wrapper select {
+        width: 30%;
+        padding: .1rem .75rem!important;
+        height: 30px!important;
+        font-size: .9rem!important;
+    }
     @media(min-width: 480px) {
         #app{
             position: relative;

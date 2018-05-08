@@ -9,31 +9,12 @@
 		<div class="sign-in" :style="'backgroundImage: url('+ signBg +')'">
 			<div class="sign-in-cont">
 				<ul class="integral-val clear">
-					<li class="pull-left six-equals">+5</li>
-					<li class="pull-left six-equals">+5</li>
-					<li class="pull-left six-equals">+6</li>
-					<li class="pull-left six-equals">+7</li>
-					<li class="pull-left six-equals">+8</li>
-					<li class="pull-left six-equals">+9</li>
+					<li v-for="(item,index) in Array(6)" :class="['pull-left','six-equals',index < curTime ? 'active' : '']">+{{ index == 0 ? initIntegral : initIntegral + index - 1 }}</li>
 				</ul>
 				<ul class="line">
-					<li class="dot-pos">
-						<div class="dot" :style="'backgroundImage: url('+ dot +')'"></div>
-					</li>
-					<li class="dot-pos">
-						<div class="dot" :style="'backgroundImage: url('+ dot +')'"></div>
-					</li>
-					<li class="dot-pos">
-						<div class="dot" :style="'backgroundImage: url('+ dot +')'"></div>
-					</li>
-					<li class="dot-pos">
-						<div class="dot" :style="'backgroundImage: url('+ dot +')'"></div>
-					</li>
-					<li class="dot-pos">
-						<div class="dot" :style="'backgroundImage: url('+ dot +')'"></div>
-					</li>
-					<li class="dot-pos">
-						<div class="dot" :style="'backgroundImage: url('+ dot +')'"></div>
+					<li class="dot-pos" v-for="(item,index) in Array(6)"> 
+						<em :class="[index < curTime ? 'active' : '']"></em>
+						<div v-if="index >= curTime" class="dot" :style="'backgroundImage: url('+ dot +')'"></div>
 					</li>
 				</ul>
 				<ul class="date clear">
@@ -45,7 +26,7 @@
 					<li class="pull-left six-equals">05月08日</li>
 				</ul>
 				<div class="btn-group clear">
-					<button class="pull-left">签到</button>
+					<button :class="['pull-left', !isclick ? 'is-sign-in' : '']" @click="signIn">签到</button>
 					<button class="pull-right">抽奖</button>
 				</div>
 			</div>
@@ -74,11 +55,23 @@
 	export default {
 		data(){
 			 return {
+			 	curTime: 1,
+			 	initIntegral: 5,
+			 	isclick: true,
 			 	signBg: require('../../../assets/user/integral/sign_bg.png'),
 			 	dot: require('../../../assets/user/integral/dot.png'),
 			 	product: require('../../../assets/user/integral/product.jpg'),
 			 	product1: require('../../../assets/user/integral/product1.jpg')
 			 }
+		},
+		methods: {
+			signIn(){
+				if(this.isclick){
+					this.curTime++;
+					this.isclick = !this.isclick;
+					return;
+				}
+			}
 		}
 	}
 </script>
@@ -139,11 +132,27 @@
 		margin: auto;
 		border-top: 1px dashed #000;
 		margin-top: 1.2rem;
-		position: relative;
 	}
 	.line .dot-pos {
 		display: inline-block;
-		width: 15%;
+		width: 16.5%;
+		height: .8rem;
+		position: relative;
+	}
+	.line em {
+		display: none;
+		width: .75rem;
+		height: .75rem;
+		background-color: #ff9c00;
+		border-radius: 50%;
+		position: absolute;
+		left: 50%;
+	    top: -.5rem;
+	    -webkit-transform: translateX(-50%);
+	    -moz-transform: translateX(-50%);
+	    -o-transform: translateX(-50%);
+	    transform: translateX(-50%);
+		z-index: 9;
 	}
 	.line .dot {
 		width: .75rem;
@@ -152,11 +161,17 @@
 	    background-repeat: no-repeat;
 	    position: relative;
 	    left: 50%;
-	    top: -8px;
+	    top: -.5rem;
 	    -webkit-transform: translateX(-50%);
 	    -moz-transform: translateX(-50%);
 	    -o-transform: translateX(-50%);
 	    transform: translateX(-50%);
+	}
+	.integral-val .active {
+		color: #ff9c00;
+	}
+	em.active {
+		display: block;
 	}
 	.date {
 		width: 94%;
@@ -180,6 +195,9 @@
 	    border-radius: 2rem;
 		background-color: #ff9c00;
 		outline: none;
+	}
+	.btn-group button.is-sign-in {
+		background-color: #999;
 	}
 	.exchange {
 		padding-bottom: 3rem;
