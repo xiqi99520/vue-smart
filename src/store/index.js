@@ -8,7 +8,7 @@ const store = new Vuex.Store({
     // 定义状态
     state: {
         user: {
-            name: '测试'
+            status: 1
         }
     }
 })

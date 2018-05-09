@@ -58,6 +58,10 @@ const AddAddress = r => require.ensure([], () => r(require('@/components/user/in
 const Schedule = r => require.ensure([], () => r(require('@/components/user/integral/schedule')), 'User')
 const EditAddress = r => require.ensure([], () => r(require('@/components/user/integral/editAddress')), 'User')
 
+const Login = r => require.ensure([], () => r(require('@/components/user/login')), 'Login')
+const Log = r => require.ensure([], () => r(require('@/components/user/login/login')), 'Login')
+const Verificatione = r => require.ensure([], () => r(require('@/components/user/login/verificatione')), 'Login')
+
 Vue.use(Router)
 
 export default new Router({
@@ -116,7 +120,10 @@ export default new Router({
 		}, {
 			path: '/user',
 			name: 'User',
-			component: User
+			component: User,
+			meta: {
+		        auth: true
+		    }
 		}, {
 			path: '/setting',
 			name: 'Setting',
@@ -242,6 +249,22 @@ export default new Router({
 			path: '/schedule',
 			name: 'Schedule',
 			component: Schedule
+		}, {
+			path: '/login',
+			name: 'Login',
+			component: Login,
+			meta: {
+		        auth: false
+		    },
+			children: [
+				{
+					path: '/',
+					component: Log
+				}, {
+					path: '/verificatione',
+					component: Verificatione
+				}
+			]
 		}
 	]
 })

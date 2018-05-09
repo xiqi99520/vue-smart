@@ -80,7 +80,9 @@
 		margin-bottom: .2rem;
 	}
 	.btn-exchange {
+		display: block;
 		width: 100%;
+		max-width: 480px;
 		height: 3rem;
 		line-height: 3rem;
 		font-size: .9rem;
@@ -89,8 +91,12 @@
 		background-color: #ff9c00;
 		border: none;
 		position: fixed;
-		left: 0;
-		bottom: 0;
+		left: 50%;
+	    bottom: 0;
+	    -webkit-transform: translateX(-50%);
+	    -moz-transform: translateX(-50%);
+	    -o-transform: translateX(-50%);
+	    transform: translateX(-50%);
 	}
 	.old-prize {
 		color: #999;

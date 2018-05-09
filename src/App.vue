@@ -1,20 +1,41 @@
 <template>
     <div id="app" v-cloak :style="{ 'overflow': this.$route.path == '/' ? 'hidden' : 'auto' }">
         <keep-alive>
-            <transition :name="transitionName">
-                <router-view :class="[isTransition ? 'child-view' : '']" />
+            <transition :name="transitionName" mode="out-in">
+                <router-view></router-view>
             </transition>
         </keep-alive>
     </div>
 </template>
 
 <script>
+    // import './components/sdk/js-sdk'
     export default {
         name: 'App',
         data(){
             return {
-                transitionName: '',
-                isTransition: false
+                transitionName: 'fade'
+            }
+        },
+        created() {
+            this.init();
+        },
+        methods: {
+            //初始化sdk
+            init(cThis){
+               /* ws = new XSDK('mqtt', {
+                    type: 'app',
+                    host: 'ws://118.190.126.197:1884/mqtt',
+                    userid: GetCookie("user_id"), // 用户在云智易平台的user_id，通过获取OpenID接口获取
+                    authorize: GetCookie("authorize"), // 用户在云智易平台的authorize，通过获取OpenID接口获取
+                    keepAliveInterval: 40, // 非必填，mqtt通讯时长，默认为40s，每40s发送ping请求
+                });
+
+                ws.on('ready', function() {
+                    console.log('成功连上了');
+                    console.log(devices);
+                    ws && ws.emit('adddevices', devices) //_devices 表示用户绑定设备列表
+                });*/
             }
         }
     }
@@ -25,7 +46,9 @@
         padding: 0;
         margin: 0;
     }
-    a:link, a:hover, a:visited {
+    a:link,
+    a:hover,
+    a:visited {
         color:#2c3e50;
         text-decoration: none;
         -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
@@ -41,18 +64,6 @@
         color: #2c3e50;
         height: 100vh;
         max-width: 480px;
-    }
-    [v-cloak]{ display:none} 
-    .child-view {
-      transition: all 30.6s ease;
-    }
-    .slide-left-enter, .slide-right-leave-active {
-      -webkit-transform: translate(100%, 0);
-      transform: translate(100%, 0);
-    }
-    .slide-left-leave-active, .slide-right-enter {
-      -webkit-transform: translate(-100%, 0);
-      transform: translate(-100%, 0);
     }
     .shade {
         width: 100%;
@@ -110,6 +121,14 @@
         padding: .1rem .75rem!important;
         height: 30px!important;
         font-size: .9rem!important;
+    }
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: all .1s ease;
+    }
+    .fade-enter,
+    .fade-leave-active {
+        opacity: 0;
     }
     @media(min-width: 480px) {
         #app{
