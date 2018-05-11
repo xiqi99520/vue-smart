@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store/index'
+import axios from 'axios'
 
 Vue.config.productionTip = false
 
@@ -16,7 +17,7 @@ new Vue({
 
 router.beforeEach((to, from, next) => {
     if(to.meta.auth) { //是否验证
-        if(store.state.user.status) { //是否登录
+        if(store.state.user) { //是否登录
             next()
         } else { //未登录则跳转到登录页面
             next('/login')
@@ -25,3 +26,5 @@ router.beforeEach((to, from, next) => {
         next()
     }
 })
+
+Vue.prototype.$axios = axios

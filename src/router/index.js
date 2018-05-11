@@ -13,6 +13,8 @@ const sceneGroup = r => require.ensure([], () => r(require('@/components/scenes/
 const linkage = r => require.ensure([], () => r(require('@/components/scenes/childrens/linkage')), 'Scene')
 
 const List = r => require.ensure([], () => r(require('@/components/equipment/list')), 'List')
+const Add = r => require.ensure([], () => r(require('@/components/equipment/add')), 'List')
+const AddEquip = r => require.ensure([], () => r(require('@/components/equipment/addEquip')), 'List')
 
 const Security = r => require.ensure([], () => r(require('@/components/security/security')), 'Security')
 const SecuritySetting = r => require.ensure([], () => r(require('@/components/security/securitySetting')), 'Security')
@@ -114,9 +116,17 @@ export default new Router({
 			name: 'securitySetting',
 			component: SecuritySetting
 		}, {
-			path: '/addEqu',
+			path: '/list',
 			name: 'List',
 			component: List
+		}, {
+			path: '/add',
+			name: 'Add',
+			component: Add
+		}, {
+			path: '/addEquip',
+			name: 'AddEquip',
+			component: AddEquip
 		}, {
 			path: '/user',
 			name: 'User',
@@ -253,9 +263,6 @@ export default new Router({
 			path: '/login',
 			name: 'Login',
 			component: Login,
-			meta: {
-		        auth: false
-		    },
 			children: [
 				{
 					path: '/',

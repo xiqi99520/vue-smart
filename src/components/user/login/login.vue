@@ -13,17 +13,31 @@
 				</div>
 				<input type="password" placeholder="输入密码" autocomplete="off" />
 			</div>
-			<router-link to="/user" class="btn-login">登入</router-link>
+			<div class="btn-login" @click="goto">登入</div>
 		</div>
 	</div>
 </template>
 
 <script>
+	import { mapState, mapMutations } from 'vuex'
 	export default {
 		data(){
 			return {
 				phone: require('../../../assets/user/login/phone.png'),
 				password: require('../../../assets/user/login/password.png')
+			}
+		},
+		computed: {
+			...mapState(['user']),
+		},
+		methods: {
+			...mapMutations(['modifyStatus']),
+			goto(){
+				let _this = this;
+				_this.modifyStatus();
+				if(_this.user){
+					_this.$router.push({path: '/user'});
+				}
 			}
 		}
 	}

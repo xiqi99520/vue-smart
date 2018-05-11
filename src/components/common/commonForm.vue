@@ -49,7 +49,7 @@
 			  	}).then(function (response) {
 				    console.log(response);
 				}).catch(function (error) {
-				    console.log(1112);
+				    console.log(error);
 				});
 			},
 			close(){

@@ -10,7 +10,22 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/zzjj-app': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/zzjj-app': '/zzjj-app'
+        }
+      },
+      '/v2': {
+        target: 'http://118.190.121.138',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/v2': '/v2'
+        }
+      },
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

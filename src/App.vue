@@ -10,11 +10,13 @@
 
 <script>
     // import './components/sdk/js-sdk'
+    import Vue from 'vue'
     export default {
         name: 'App',
         data(){
             return {
-                transitionName: 'fade'
+                transitionName: 'fade',
+                isopen: false
             }
         },
         created() {
@@ -23,6 +25,7 @@
         methods: {
             //初始化sdk
             init(cThis){
+                this.$store.ceshi = 'hahahah';
                /* ws = new XSDK('mqtt', {
                     type: 'app',
                     host: 'ws://118.190.126.197:1884/mqtt',

@@ -76,6 +76,16 @@
                         break;
                 }
             }
+        },
+        methods: {
+            startRecognize() {
+                scan = new plus.barcode.Barcode('bcid');
+                scan.onmarked = onmarked;
+                   this.startScan
+            },
+            startScan () {
+                scan.start();
+            } 
         }
     }
 </script>

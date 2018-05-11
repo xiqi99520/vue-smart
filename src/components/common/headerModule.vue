@@ -19,7 +19,7 @@
 		},
         methods: {
             addUrl(){
-                this.$router.push({path: '/addEqu'});
+                this.$router.push({path: '/list'});
             }
         }
 	}

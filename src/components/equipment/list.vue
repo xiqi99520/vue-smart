@@ -1,9 +1,6 @@
 <template>
 	<div class="smooth">
-		<div class="header clear">
-			<div class="icon-back pull-left" @click="routerback" :style="{backgroundImage: 'url(' + iconBack + ')'}"></div>
-			{{ title }}
-		</div>
+		<publicHead :title="msg"></publicHead>
 		<div class="equipment">
 			<ul>
 				<li v-for="item in equipmentArr" class="equ-group clear">
@@ -17,10 +14,11 @@
 </template>
 
 <script>
+	import publicHead from '../common/publicHeader'
 	export default {
 		data(){
 			return {
-				title: '添加设备',
+				msg: '添加设备',
 				iconBack: require('../../assets/common/arrow_left.png'),
 				iconGo: require('../../assets/common/arrow_right.png'),
 				equipmentArr: [
@@ -50,10 +48,8 @@
 				]
 			}
 		},
-		methods: {
-			routerback: function () {
-				this.$router.back()
-			}
+		components: {
+			publicHead
 		}
 	}
 </script>
@@ -75,10 +71,6 @@
 		background-repeat: no-repeat;
 		position: relative;
     	left: .6rem;
-	}
-	.equipment {
-		position: relative;
-		top: 2.6rem;
 	}
 	.equipment .icon {
 		width: 2.2rem;
