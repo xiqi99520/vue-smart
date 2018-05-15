@@ -9,7 +9,6 @@
 </template>
 
 <script>
-    // import './components/sdk/js-sdk'
     import Vue from 'vue'
     export default {
         name: 'App',
@@ -20,26 +19,10 @@
             }
         },
         created() {
-            this.init();
+            
         },
         methods: {
-            //初始化sdk
-            init(cThis){
-                this.$store.ceshi = 'hahahah';
-               /* ws = new XSDK('mqtt', {
-                    type: 'app',
-                    host: 'ws://118.190.126.197:1884/mqtt',
-                    userid: GetCookie("user_id"), // 用户在云智易平台的user_id，通过获取OpenID接口获取
-                    authorize: GetCookie("authorize"), // 用户在云智易平台的authorize，通过获取OpenID接口获取
-                    keepAliveInterval: 40, // 非必填，mqtt通讯时长，默认为40s，每40s发送ping请求
-                });
 
-                ws.on('ready', function() {
-                    console.log('成功连上了');
-                    console.log(devices);
-                    ws && ws.emit('adddevices', devices) //_devices 表示用户绑定设备列表
-                });*/
-            }
         }
     }
 </script>
