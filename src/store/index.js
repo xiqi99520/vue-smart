@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import Qs from 'qs'
 
 Vue.use(Vuex)
 
@@ -14,8 +15,10 @@ const store = new Vuex.Store({
         devices: [],
         ws: null,
         eqUl: [],
-    		baseScene: [],
-    		YzyEqUl: []
+		baseScene: [],
+		YzyEqUl: [],
+        sersorName: '',
+        curShort: ''
     },
     mutations: {
     	modifyStatus(){
@@ -23,103 +26,124 @@ const store = new Vuex.Store({
     			this.state.user = !this.state.user;
     		}
     	},
+        getSceneList(){
+            var _this = this;
+            _this.commit('GetCookie', {cvalue: "id"});
+            let params = {
+                'accountId': _this.state.cookieVals.id
+            }
+            let curParams = Qs.stringify(params);
+            let config = {
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+              }
+            }
+            axios.post('/zzjj-app/customScene/sceneList.do', curParams, config).then(response=>{
+                console.log('场景查询列表',response);
+                if(response.status == 200){
+
+                }else{
+
+                }
+            }).catch(error=>{
+                alert("服务器返回数据错误");
+            })
+        },
+        getLinkageList(){
+            var _this = this;
+            _this.commit('GetCookie', {cvalue: "id"});
+            let params = {
+                'accountId': _this.state.cookieVals.id
+            }
+            let curParams = Qs.stringify(params);
+            let config = {
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+              }
+            }
+            axios.post('/zzjj-app/customlinkage/linkageList.do', curParams, config).then(response=>{
+                console.log('联动查询列表',response);return;
+                if(response.status == 200){
+
+                }else{
+
+                }
+            }).catch(error=>{
+                alert("服务器返回数据错误");
+            })
+        },
+        houseList() {
+            let _this = this;
+            _this.commit('GetCookie', {cvalue: "id"});
+            let params = {
+                'userId': _this.state.cookieVals.id,
+                'houseId': '488'
+            }
+            let curParams = Qs.stringify(params);
+            let config = {
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+              }
+            }
+            axios.post('/zzjj-app/group/listGroup.do', curParams, config).then(response=>{
+                console.log('获取房间列表',response); return;
+                if(response.status == 200){
+
+                }else{
+
+                }
+            }).catch(error=>{
+                alert("服务器返回数据错误");
+            })
+        },
+        sersorInit(obj, data){ //初始化传感器
+            let origin = data.shortAddress;
+            let curShortaddress = origin.slice(2,4) + origin.slice(0,2);
+            this.state.sersorName = data.name;
+            this.state.curShort = origin;
+            let params = {
+                deviceId: this.commit('GetCookie', {cvalue: "hostId"}),
+                platformType: 1,
+                shortaddress: curShortaddress,
+                endpoint: data.Endpoint,
+                pageNo:1,
+                pageSize:20
+            }
+            let curParams = Qs.stringify(params);
+            axios.post('/zzjj-app/sensorreport/grid.do', curParams).then(response=>{
+                console.log('传感器',response); return;
+                if(response.status == 200){
+
+                }else{
+
+                }
+            }).catch(error=>{
+                alert("服务器返回数据错误");
+            })
+        },
     	//初始化sdk
-		initSdk(){
-			let _this = this;
-			_this.commit('GetCookie', {cvalue: "authorize"});
-			_this.state.ws = new XSDK('mqtt', {
-				type: 'app',
-				host: 'ws://118.190.126.197:1884/mqtt',
-				userid: _this.state.cookieVals.user_id, // 用户在云智易平台的user_id，通过获取OpenID接口获取
-				authorize: _this.state.cookieVals.authorize, // 用户在云智易平台的authorize，通过获取OpenID接口获取
-				keepAliveInterval: 40, // 非必填，mqtt通讯时长，默认为40s，每40s发送ping请求
-			});
+  		initSdk(){
+  			let _this = this;
+  			_this.commit('GetCookie', {cvalue: "authorize"});
+  			_this.state.ws = new XSDK('mqtt', {
+  				type: 'app',
+  				host: 'ws://118.190.126.197:1884/mqtt',
+  				userid: _this.state.cookieVals.user_id, // 用户在云智易平台的user_id，通过获取OpenID接口获取
+  				authorize: _this.state.cookieVals.authorize, // 用户在云智易平台的authorize，通过获取OpenID接口获取
+  				keepAliveInterval: 40, // 非必填，mqtt通讯时长，默认为40s，每40s发送ping请求
+  			});
 
-			_this.state.ws.on('ready', function() {
-				console.log('成功连上了');
-				_this.state.ws && _this.state.ws.emit('adddevices', _this.state.devices) //devices 表示用户绑定设备列表
-			});
+  			_this.state.ws.on('ready', function() {
+  				console.log('成功连上了');
+  				_this.state.ws && _this.state.ws.emit('adddevices', _this.state.devices) //devices 表示用户绑定设备列表
+  			});
 
-			_this.state.ws.on('devicesready', function(devicesArray) {
-				_this.state.socketObj = devicesArray[0];
-				_this.commit('changeSdkMsg', {val: "0800FFFFFFFFFE9D"});
-				_this.commit('getListen');
-				_this.commit('getSend');
-				_this.commit('getSdkEqMsg');
-				/*_this.state.socketObj.on('data', function(data) {
-					if (data.type === 'datapoint') {
-				    	let ableData = data.data[0].value;
-				    	let type = ableData.substring(0, 2);
-				    	let shortAddress = ableData.substring(4, 8);
-					    let Endpoint = ableData.substring(8, 10);
-		      		let DeviceId = ableData.substring(14, 18);
-		      		let status = ableData.substring(18, 20);
-		      		let nameLength = parseInt(ableData.substring(20, 22), 16);
-		      		let name = ableData.substring(22,nameLength * 2 + 22);
-		      		let online = ableData.substring(nameLength * 2 + 22,nameLength * 2 + 24);
-		      		let m = _this.commit('prePro', {name: name});
-		      		let czName = decodeURI(m);
-		      		let IEEE = ableData.substring(nameLength * 2 + 24, nameLength * 2 + 40);
-		      		let SNLength = parseInt(ableData.substring(nameLength*2+40,nameLength * 2 + 42), 16);
-		      		let eqSN = ableData.substring(nameLength * 2 + 42, (nameLength + SNLength) * 2 + 42);
-		      		let ZoneType = ableData.substring((nameLength+SNLength) * 2 + 42, (nameLength+SNLength) * 2 + 46);
-		      		let des = "";
-		      		let SN = ableData.substring(14, 22);
-				    	switch(type){
-				        	case "15":
-				            	_this.commit('SetCookie', {cname: "SN", cvalue: SN, exdays: 1});
-				        		break;
-				        	case "70":
-				        		window.emergency(ableData);
-				        		break;
-				        	case "01":
-					      		if(status == 0){
-					      			des = "关";
-					      		}else{
-					      			des = "开";
-					      		}
-					      		let eqLi = [{
-					      				"shortAddress": shortAddress,
-					      				"DeviceId": DeviceId.substring(2,4)+DeviceId.substring(0,2),
-					      				"name": czName,
-					      				"status": status,
-					      				"online": online,
-					      				"Endpoint": Endpoint,
-					      				"IEEE": IEEE,
-					      				"ZoneType": ZoneType.substring(2,4)+ZoneType.substring(0,2),
-					      				"toUrl":"",
-					      				"all": ableData,
-					      				"des": des,
-					      				"click": 0,
-					      				"eqSN": eqSN,
-					      				"onSrc":  require('../assets/index/air_pre.png",
-					      				"offSrc":  require('../assets/index/air_nor.png"
-					      		}];
-					      		/*_this.state.eqUl.map(function(item,index){
-					      			if(item.Endpoint == Endpoint && item.IEEE == IEEE){
-					      				item.shortAddress = shortAddress;
-					      				item.DeviceId = DeviceId.substring(2,4)+DeviceId.substring(0,2);
-					      				item.name = czName;
-					      				item.status = status;
-					      				item.online = online;
-					      				item.all = ableData;
-					      				item.ZoneType = ZoneType.substring(2,4)+ZoneType.substring(0,2);
-					      				eqLi = null;
-					      			}
-					      		});
-					      		if(eqLi != null){
-					      			_this.state.eqUl.splice(0, 1, eqLi);
-					      		}*/
-					      		// _this.commit('addToUrl', {datas: []});
-
-					      		/*publicEqUl = eqUl;*/
-					      		// _this.commit('SetCookie', {cname: "eqLength", cvalue: _this.state.eqUl.length, exdays: 1});
-					   /*   		break;
-				        	default:
-				        		break;
-				    	}
-				    }
-				});*/
+  			_this.state.ws.on('devicesready', function(devicesArray) {
+  				_this.state.socketObj = devicesArray[0];
+  				_this.commit('changeSdkMsg', {val: "0800FFFFFFFFFE9D"});
+  				_this.commit('getListen');
+  				_this.commit('getSend');
+  				_this.commit('getSdkEqMsg');
 			})
 		},
 		//sdk发送数据
@@ -134,7 +158,7 @@ const store = new Vuex.Store({
           data: dataArr
       }, function(res) {
           if (res.status === 0) {
-          	console.log('sdk发送数据发送成功');
+          	  console.log('sdk发送数据发送成功');
           } else {
               alert("发送失败,状态:" + res.status)
           }
@@ -172,7 +196,7 @@ const store = new Vuex.Store({
 				};
 				let curParams = JSON.stringify(params);
 				let config = {
-					'Access-Token': 'MEQzOTI4MUMzQkY5NDkzNzBDMERGRkE1Mzg1MjYwQThGRDI1QjQxM0ZBOUYxRkEzNTQzQjU1ODcwOEU1QUJCMg=='
+					'Access-Token': 'OTM2RDJENzk1OTVFMzIxNjZCQ0Q5ODk4QTk0QkU0QjRERkIxNjEyMDQ2MTFENTY0OEFBMURCMzc2Q0RFQTFBRg=='
 				};
 				axios.post('/v2/user_auth', curParams, config).then(response=>{
 					if(response.status == 200){
@@ -446,7 +470,7 @@ const store = new Vuex.Store({
 				  		}
 						item.offSrc= require('../assets/index/switch_nor.png');
 						item.onSrc= require('../assets/index/switch_pre.png');
-						item.toUrl="#/equipment/socket/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint+"/"+item.eqSN+"/"+item.DeviceId+"/"+item.ZoneType+"/"+item.IEEE;
+						item.toUrl="/sersor/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint;
 						break;
 					case "0002":
 						if(!item.name){
@@ -457,7 +481,7 @@ const store = new Vuex.Store({
 				  		}
 						item.offSrc= require('../assets/index/lamp_nor.png');
 						item.onSrc= require('../assets/index/lamp_pre.png');
-						item.toUrl="#/equipment/socket/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint+"/"+item.eqSN+"/"+item.DeviceId+"/"+item.ZoneType+"/"+item.IEEE;
+						item.toUrl="/sersor/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint;
 						break;
 					case "0004":
 						if(!item.name){
@@ -476,7 +500,7 @@ const store = new Vuex.Store({
 				  		}
 						item.offSrc= require('../assets/index/socket_nor.png');
 						item.onSrc= require('../assets/index/socket_pre.png');
-						item.toUrl="#/equipment/socket/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint+"/"+item.eqSN+"/"+item.DeviceId+"/"+item.ZoneType+"/"+item.IEEE;
+						item.toUrl="/sersor/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint;
 						break;
 					case "0051":
 						if(!item.name){
@@ -487,7 +511,7 @@ const store = new Vuex.Store({
 				  		}
 						item.offSrc= require('../assets/index/socket_nor.png');
 						item.onSrc= require('../assets/index/socket_pre.png');
-						item.toUrl="#/equipment/socket/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint+"/"+item.eqSN+"/"+item.DeviceId+"/"+item.ZoneType+"/"+item.IEEE;
+						item.toUrl="/sersor/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint;
 						break;
 					case "0053":
 						if(!item.name){
@@ -500,7 +524,7 @@ const store = new Vuex.Store({
 				  		}
 						item.offSrc= require('../assets/index/air_nor.png');
 						item.onSrc= require('../assets/index/air_pre.png');
-						item.toUrl="#/equipment/defaultEquip/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint+"/"+item.eqSN+"/"+item.DeviceId+"/"+item.ZoneType+"/"+item.IEEE;
+						item.toUrl="/sersor/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint;
 						break;
 					case "0100":
 					case "0101":
@@ -514,7 +538,7 @@ const store = new Vuex.Store({
 						item.click=1;
 						item.offSrc =  require('../assets/index/lamp_nor.png');
 						item.onSrc =  require('../assets/index/lamp_pre.png');
-						item.toUrl = "#/equipment/light/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint+"/"+item.eqSN+"/"+item.DeviceId+"/"+item.ZoneType+"/"+item.IEEE;
+						item.toUrl = "/sersor/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint;
 						break;
 					case "0102":
 						if(!item.name){
@@ -525,7 +549,7 @@ const store = new Vuex.Store({
 				  		}
 						item.offSrc =  require('../assets/index/lamp_nor.png');
 						item.onSrc =  require('../assets/index/lamp_pre.png');
-						item.toUrl = "#/equipment/light/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint+"/"+item.eqSN+"/"+item.DeviceId+"/"+item.ZoneType+"/"+item.IEEE;
+						item.toUrl = "/sersor/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint;
 						break;
 					case "0110":
 					case "0220":
@@ -537,7 +561,7 @@ const store = new Vuex.Store({
 				  		}
 						item.offSrc =  require('../assets/index/lamp_nor.png');
 						item.onSrc =  require('../assets/index/lamp_pre.png');
-						item.toUrl = "#/equipment/light/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint+"/"+item.eqSN+"/"+item.DeviceId+"/"+item.ZoneType+"/"+item.IEEE;
+						item.toUrl = "/sersor/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint;
 						break;
 					case "0210":
 						if(!item.name){
@@ -548,7 +572,7 @@ const store = new Vuex.Store({
 				  		}
 						item.offSrc =  require('../assets/index/lamp_nor.png');
 						item.onSrc =  require('../assets/index/lamp_pre.png');
-						item.toUrl = "#/equipment/light/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint+"/"+item.eqSN+"/"+item.DeviceId+"/"+item.ZoneType+"/"+item.IEEE;
+						item.toUrl = "/sersor/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint;
 						break;
 					case "0202":
 						if(!item.name){
@@ -560,7 +584,7 @@ const store = new Vuex.Store({
 				  		}
 						item.offSrc= require('../assets/index/curtain_nor.png');
 						item.onSrc= require('../assets/index/curtain_pre.png');
-						item.toUrl="#/equipment/curtains/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint+"/"+item.eqSN+"/"+item.DeviceId+"/"+item.ZoneType+"/"+item.IEEE;
+						item.toUrl="/sersor/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint;
 						break;
 					case "0800":
 					case "0810":
@@ -574,7 +598,7 @@ const store = new Vuex.Store({
 				  		}
 						item.offSrc =  require('../assets/index/scene_nor.png');
 						item.onSrc =  require('../assets/index/scene_pre.png');
-						item.toUrl = "#/equipment/light/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint+"/"+item.eqSN+"/"+item.DeviceId+"/"+item.ZoneType+"/"+item.IEEE;
+						item.toUrl = "/sersor/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint;
 						break;
 					case "0403":
 						if(!item.name){
@@ -585,7 +609,7 @@ const store = new Vuex.Store({
 				  		}else{
 				  			item.des = "在线";
 				  		}
-						item.toUrl = "#/equipment/defaultEquip/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint+"/"+item.eqSN+"/"+item.DeviceId+"/"+item.ZoneType+"/"+item.IEEE;
+						item.toUrl = "/sersor/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint;
 						break;
 					case "0161":
 					case "0163":
@@ -600,7 +624,7 @@ const store = new Vuex.Store({
 						item.trans = true;
 						item.offSrc =  require('../assets/index/infrared_nor.png');
 						item.onSrc =  require('../assets/index/infrared_pre.png');
-						item.toUrl = "#/equipment/transponder/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint+"/"+item.eqSN+"/"+item.DeviceId+"/"+item.ZoneType+"/"+item.IEEE;
+						item.toUrl = "/sersor/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint;
 						break;
 					case "0106":
 						if(!item.name){
@@ -612,7 +636,7 @@ const store = new Vuex.Store({
 				  		}
 						item.offSrc =  require('../assets/index/lamp_nor.png');
 						item.onSrc =  require('../assets/index/lamp_pre.png');
-						item.toUrl = "#/equipment/light/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint+"/"+item.eqSN+"/"+item.DeviceId+"/"+item.ZoneType+"/"+item.IEEE;
+						item.toUrl = "/sersor/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint;
 						break;
 					case "0301":
 						if(!item.name){
@@ -624,7 +648,7 @@ const store = new Vuex.Store({
 				  		}
 						item.offSrc =  require('../assets/index/temperature_nor.png');
 						item.onSrc =  require('../assets/index/temperature_nor_pre.png');
-						item.toUrl = "#/equipment/defaultEquip";
+						item.toUrl = "/sersor/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint;
 						break;
 					case "0302":
 					case "0303":
@@ -637,7 +661,7 @@ const store = new Vuex.Store({
 				  		}
 						item.offSrc =  require('../assets/index/Temperature_humidity_nor.png');
 						item.onSrc =  require('../assets/index/Temperature_humidity_pre.png');
-						item.toUrl = "#/equipment/defaultEquip/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint+"/"+item.eqSN+"/"+item.DeviceId+"/"+item.ZoneType+"/"+item.IEEE;
+						item.toUrl = "/sersor/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint;
 						break;
 					case "0309":
 						if(!item.name){
@@ -649,7 +673,7 @@ const store = new Vuex.Store({
 				  		}
 						item.offSrc =  require('../assets/index/air_nor.png');
 						item.onSrc =  require('../assets/index/air_pre.png');
-						item.toUrl = "#/equipment/defaultEquip";
+						item.toUrl = "/sersor/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint;
 						break;
 					case "000A":
 						if(!item.name){
@@ -661,7 +685,7 @@ const store = new Vuex.Store({
 						item.click=1;
 						item.offSrc= require('../assets/index/door_nor.png');
 						item.onSrc= require('../assets/index/door_pre.png');
-						item.toUrl="#/equipment/door/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint+"/"+item.eqSN+"/"+item.DeviceId+"/"+item.ZoneType+"/"+item.IEEE;
+						item.toUrl="/sersor/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint;
 						break;
 					case "0402":
 						switch(item.ZoneType){
@@ -765,7 +789,7 @@ const store = new Vuex.Store({
 							default:
 								break;
 						}
-						item.toUrl="#/equipment/defaultEquip/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint+"/"+item.eqSN+"/"+item.DeviceId+"/"+item.ZoneType+"/"+item.IEEE;
+						item.toUrl="/sersor/"+item.name+"/"+item.shortAddress+"/"+item.Endpoint;
 						break;
 
 					default:
@@ -776,7 +800,6 @@ const store = new Vuex.Store({
           _this.state.eqUl.push(item);
 				}
 			});
-console.log(_this.state.eqUl);
 			return _this.state.eqUl;
 		},
 		emergency(ableData){

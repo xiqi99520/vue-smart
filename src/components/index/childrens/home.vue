@@ -6,6 +6,7 @@
 
 <script>
 	import commonScenes from '../../common/commonScenes'
+	import { mapMutations } from 'vuex'
 	export default {
 		data(){
 			return {
@@ -37,6 +38,12 @@
 		},
 		components: {
 			commonScenes
+		},
+		methods: {
+			...mapMutations(['houseList'])
+		},
+		mounted() {
+			this.houseList();
 		}
 	}
 </script>

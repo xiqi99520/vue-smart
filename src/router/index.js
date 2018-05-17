@@ -7,6 +7,8 @@ const Home = r => require.ensure([], () => r(require('@/components/index/childre
 const Bed = r => require.ensure([], () => r(require('@/components/index/childrens/bed')), 'Index')
 const Study = r => require.ensure([], () => r(require('@/components/index/childrens/study')), 'Index')
 const Main = r => require.ensure([], () => r(require('@/components/index/main')), 'Index')
+const Management = r => require.ensure([], () => r(require('@/components/index/management')), 'Index')
+const AddHouse = r => require.ensure([], () => r(require('@/components/index/addHouse')), 'Index')
 
 const Scene = r => require.ensure([], () => r(require('@/components/scenes/mainScene')), 'Scene')
 const sceneGroup = r => require.ensure([], () => r(require('@/components/scenes/childrens/scene')), 'Scene')
@@ -15,6 +17,8 @@ const linkage = r => require.ensure([], () => r(require('@/components/scenes/chi
 const List = r => require.ensure([], () => r(require('@/components/equipment/list')), 'List')
 const Add = r => require.ensure([], () => r(require('@/components/equipment/add')), 'List')
 const AddEquip = r => require.ensure([], () => r(require('@/components/equipment/addEquip')), 'List')
+const Sersor = r => require.ensure([], () => r(require('@/components/equipment/sersor')), 'List')
+const Option = r => require.ensure([], () => r(require('@/components/equipment/option')), 'List')
 
 const Security = r => require.ensure([], () => r(require('@/components/security/security')), 'Security')
 const SecuritySetting = r => require.ensure([], () => r(require('@/components/security/securitySetting')), 'Security')
@@ -108,6 +112,14 @@ export default new Router({
 				},
 		    ]
 		}, {
+			path: '/management',
+			name: 'Management',
+			component: Management
+		}, {
+			path: '/addHouse',
+			name: 'AddHouse',
+			component: AddHouse
+		}, {
 			path: '/security',
 			name: 'Security',
 			component: Security
@@ -128,6 +140,14 @@ export default new Router({
 			name: 'AddEquip',
 			component: AddEquip
 		}, {
+			path: '/sersor',
+			name: 'Sersor',
+			component: Sersor,
+		},  {
+			path: '/option',
+			name: 'Option',
+			component: Option,
+		},{
 			path: '/user',
 			name: 'User',
 			component: User,

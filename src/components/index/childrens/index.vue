@@ -4,10 +4,10 @@
             <span class="add-symbol">+</span><span class="add-tip">点击添加设备</span>
         </div>
         <div class="equipment-list">
-            <div class="pull-left single" v-for="item in eqUl">
-                <div class="area">
-                    <router-link to="/" :style="'backgroundImage:url('+ more +')'"></router-link>
-                    <img :src="item.status == 0 ? item.offSrc : item.onSrc" alt="">
+            <div class="pull-left single" v-for="(item,index) in eqUl">
+                <div class="area" :data-cur="index">
+                    <router-link :to="{ path: '/sersor', query: { cur: index }}" :style="'backgroundImage:url('+ more +')'"></router-link>
+                    <img :src="item.online == 0 ? item.offSrc : item.onSrc" alt="">
                     <p class="equipment-name">{{ item.name }}</p>
                     <p class="status">{{ item.des }}</p>
                 </div>
@@ -24,10 +24,9 @@
 				more: require('../../../assets/common/more.png')
 			}
 		},
-        computed: mapState([
-            'nodata',
-            'eqUl'
-        ]),
+        computed: {
+            ...mapState(['nodata','eqUl'])
+        },
 		methods: {
             ...mapMutations(['getToken', 'getListen', 'getSend', 'getSdkEqMsg']),
             addUrl(){

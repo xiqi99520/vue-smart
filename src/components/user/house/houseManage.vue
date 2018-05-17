@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<publicHead :title="msg" :rightMenu="rightMenu"></publicHead>
+		<publicHead :title="msg" :rightMenu="rightMenu" :toUrl="create"></publicHead>
 		<ul>
 			<li class="clear manage">
 				<a href=""></a>
@@ -32,6 +32,7 @@
 				iconRight: require('../../../assets/common/arrow_right.png'),
 				msg: '房屋管理',
 				rightMenu: '创建',
+				create: '/create',
 				curName: this.$route.params.name,
 				curHouseSrc: require('../../../assets/index/avatar.png')
 			}

@@ -3,8 +3,10 @@
 		<a class="goback" @click="goback(backurl)"></a>
 		<img class="pull-left arrow-left" :src="backIcon" alt="">
 		{{ title }}
-		<a href="/create" class="right-menu pull-right" v-if="rightMenu">{{ rightMenu }}</a>
+		<router-link :to="{path: toUrl}" class="right-menu pull-right" v-if="rightMenu">{{ rightMenu }}</router-link>
+		<a href="javascript:void(0)" class="save-menu pull-right" v-if="save">{{ save }}</a>
 		<img class="news" v-if="news" :src="news" @click="goNews" alt="">
+		<img class="setting" v-if="setting" :src="setting" @click="goSetting" alt="">
 	</div>
 </template>
 
@@ -13,8 +15,12 @@
 		props: {
 			title: String,
 			rightMenu: String,
+			add: String,
 			news: String,
-			backurl: String
+			backurl: String,
+			setting: String,
+			save: String,
+			toUrl: String
 		},
 		data() {
 			return {
@@ -31,6 +37,9 @@
 			},
 			goNews(){
 				this.$router.push('/inviteInfo');
+			},
+			goSetting(){
+				this.$router.push({path: '/option', query: {cur: this.$route.query.cur}});
 			}
 		}
 	}
@@ -72,8 +81,23 @@
 		top: .55rem;
 		right: .6rem;
 	}
+	.save-menu {
+		width: 3.6rem;
+	    height: 1.4rem;
+	    line-height: 1.4rem;
+	    font-size: .8rem;
+	    color: #ff9c00;
+	    position: absolute;
+	    top: .68rem;
+	    right: 0rem;
+	}
 	.news {
 		width: .9rem;
+		position: absolute;
+		right: .8rem;
+	}
+	.setting {
+		width: 1.1rem;
 		position: absolute;
 		right: .8rem;
 	}

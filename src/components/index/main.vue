@@ -40,7 +40,7 @@
                     {
                         pic: require('../../assets/index/icon_room.png'),
                         active: require('../../assets/index/active_room.png'),
-                        url: '/room'
+                        url: '/management'
                     },
                 ]
 			}

@@ -10,6 +10,7 @@
 </template>
 
 <script>
+	import { mapMutations } from 'vuex'
 	export default {
 		data(){
 			return {
@@ -39,9 +40,13 @@
 			}
 		},
 		methods: {
+			...mapMutations(['getLinkageList']),
 			toggle(item, index){
 				return item.isOpen = !item.isOpen;
 			}
+		},
+		created(){
+			this.getLinkageList();
 		}
 	}
 </script>

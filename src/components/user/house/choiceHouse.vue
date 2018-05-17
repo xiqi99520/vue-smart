@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<publicHead :title="msg" :rightMenu="rightMenu"></publicHead>
+		<publicHead :title="msg" :rightMenu="rightMenu" :toUrl="create"></publicHead>
 		<ul>
 			<li class="clear choice" v-for="item in securityList">
 				<router-link :to="item.url"></router-link>
@@ -20,6 +20,7 @@
 				iconRight: require('../../../assets/common/arrow_right.png'),
 				msg: '选择房屋',
 				rightMenu: '创建',
+				create: '/create',
 				securityList: [
 					{
 						title: '我的房屋(默认)',

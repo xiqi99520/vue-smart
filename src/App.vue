@@ -75,24 +75,43 @@
     .pull-right {
         float: right;
     }
+    .text-left {
+        text-align: left;
+    }
+    .text-right {
+        text-align: right;
+    }
+    
     .white {
         background-color: #fff;
     }
     li{
         list-style: none;
     }
-    .trisection {
-        width: calc(100%/3);
-    }
+
     .six-equals {
         width: calc(100%/6);
     }
+    .quarter {
+        width: 25%;
+    }
+    .trisection {
+        width: calc(100%/3);
+    }
+    .half {
+        width: 50%;
+    }
+
     .smooth {
         min-height: 100vh;
         background-color: #fff;
         position: relative;
         z-index: 2;
         padding-bottom: 5rem;
+    }
+    .interval {
+        height: .6rem;
+        background-color: #f5f5f5;
     }
     .smooth .header {
         height: 1rem;
