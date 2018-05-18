@@ -2,7 +2,7 @@
 	<div>
 		<div class="integral">
 			<h5>您的可用积分</h5>
-			<p class="integral-num">8</p>
+			<p class="integral-num">{{ this.$store.state.allIntegral }}</p>
 			<p class="recording">已经连续签到0天</p>
 			<div class="rule"><router-link to="/signInRule">规则 &gt;</router-link></div>
 		</div>
@@ -18,12 +18,7 @@
 					</li>
 				</ul>
 				<ul class="date clear">
-					<li class="pull-left six-equals">昨天</li>
-					<li class="pull-left six-equals">今天</li>
-					<li class="pull-left six-equals">明天</li>
-					<li class="pull-left six-equals">05月06日</li>
-					<li class="pull-left six-equals">05月07日</li>
-					<li class="pull-left six-equals">05月08日</li>
+					<li class="pull-left six-equals" v-for="item in this.$store.state.daysArr">{{item}}</li>
 				</ul>
 				<div class="btn-group clear">
 					<button :class="['pull-left', !isclick ? 'is-sign-in' : '']" @click="signIn">签到</button>
@@ -34,17 +29,11 @@
 		<div class="exchange">
 			<div class="header">积分兑好礼<router-link to="/goodsList" class="more">更多 &gt;</router-link></div>
 			<div class="gift-list flex">
-				<div class="gift">
-					<div class="pic" :style="'backgroundImage: url('+ product +')'"></div>
-					<p>扫地机器人</p>
-					<p class="val">1积分</p>
-					<router-link class="btn-exchange" to="/goodsDetail">立即兑换</router-link>
-				</div>
-				<div class="gift">
-					<div class="pic" :style="'backgroundImage: url('+ product1 +')'"></div>
-					<p>扫地机器人</p>
-					<p class="val">1积分</p>
-					<router-link class="btn-exchange" to="/goodsDetail">立即兑换</router-link>
+				<div class="gift" v-for="(item,index) in this.$store.state.gifts">
+					<div class="pic" :style="'backgroundImage: url('+ item.imageUrl1 +')'"></div>
+					<p>{{ item.goodsName }}</p>
+					<p class="val">{{ item.integral }}积分</p>
+					<router-link class="btn-exchange" :to="{path: '/goodsDetail', query: {cur: index}}">立即兑换</router-link>
 				</div>
 			</div>
 		</div>
@@ -52,6 +41,7 @@
 </template>
 
 <script>
+	import { mapMutations, mapActions } from 'vuex'
 	export default {
 		data(){
 			 return {
@@ -65,13 +55,21 @@
 			 }
 		},
 		methods: {
+			...mapMutations(['initGifts', 'getIntegral', 'signIn', 'initSign']),
 			signIn(){
 				if(this.isclick){
 					this.curTime++;
 					this.isclick = !this.isclick;
+					this.signIn();
+					this.getIntegral();
 					return;
 				}
 			}
+		},
+		created(){
+			this.getIntegral();
+			this.initGifts();
+			console.log('测试:',new Date(1525404314000));
 		}
 	}
 </script>

@@ -28,3 +28,4 @@ router.beforeEach((to, from, next) => {
 })
 
 Vue.prototype.$axios = axios
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';

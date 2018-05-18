@@ -18,7 +18,14 @@ const store = new Vuex.Store({
 		baseScene: [],
 		YzyEqUl: [],
         sersorName: '',
-        curShort: ''
+        curShort: '',
+        gifts: [],
+        allIntegral: '',
+        signinRecord: [],
+        signinDates: [],
+        curDataArr: [],
+        daysArr: [],
+        signinDays: [0, 0, 0, 0, 0, 0]
     },
     mutations: {
     	modifyStatus(){
@@ -26,6 +33,128 @@ const store = new Vuex.Store({
     			this.state.user = !this.state.user;
     		}
     	},
+        initGifts(){
+            let _this = this;
+            axios.get('/zzjj-app/goodschange/findDefaultGood.do').then(response=>{
+                _this.state.gifts.length = 0;
+                if(response.status == 200){
+                    let defaultData = response.data.data;
+                    defaultData.map(function(item, index) {
+                        _this.state.gifts.push(item);
+                    })
+                    console.log('gifts:',_this.state.gifts);
+                }else{
+
+                }
+            }).catch(error=>{
+                alert("服务器返回数据错误");
+            })
+        },
+        getIntegral(){
+            let _this = this;
+            this.commit('GetCookie', {cvalue: 'id'})
+            let params = {
+                'memberId': _this.state.cookieVals.id
+            }
+            let curParams = Qs.stringify(params);
+            axios.post('/zzjj-app/memberintegrallog/findTwoIntegralLog.do', curParams).then(response=>{
+                console.log('可用积分',response);
+                if(response.status == 200){
+                    _this.state.allIntegral = response.data.countPoint;
+                    _this.state.signinRecord.length = 0;
+                    response.data.data.map(function(item){
+                        _this.state.signinRecord.push(item);
+                    })
+                    console.log(123123213);
+                    _this.commit('initSign');
+                }else{
+
+                }
+            }).catch(error=>{
+                alert("服务器返回数据错误");
+            })
+        },
+        initSign(){ //检查已签到的记录
+            this.commit('calculationDays');
+            let _this = this;
+            let today = new Date().getTime();
+            let dataArr = [];
+            let YMD = {};
+            _this.state.curDataArr['year'] = new Date().getFullYear();
+            _this.state.curDataArr['month'] = new Date().getMonth() + 1;
+            _this.state.curDataArr['date'] = new Date().getDate();
+            this.state.signinRecord.map((item, index) => {
+                dataArr[index] = item.createDate;
+            })
+            _this.state.signinDates.length = 0;
+            console.log('数组',dataArr);
+            dataArr.map((item) => {
+                if(item - today < 0) {
+                    console.log('小于今天');
+                    console.log(new Date(item - today).getDate());
+                } else {
+                    console.log('大于今天');
+                }
+                // console.log(Math.abs(item - today));
+               if(Math.abs(item - today)) {
+
+               }
+            })
+           dataArr.map((item) => {
+                YMD['year'] = new Date(item).getFullYear();
+                YMD['month'] = new Date(item).getMonth() + 1;
+                YMD['date'] = new Date(item).getDate();
+                // _this.state.signinDates.push(YMD);
+                console.log('日期: ',YMD);
+            }) /*
+            console.log('已经签到的日期:',_this.state.signinDates);
+            console.log('今天:',_this.state.curDataArr);
+            let curYear = _this.state.curDataArr.year;
+            let curMonth = _this.state.curDataArr.month;
+            let curDay = _this.state.curDataArr.date;*/
+            /*_this.state.signinDates.map((item) => {
+                if(item.year < curYear || item.year > curYear) return;
+                if(item.year == curYear) {
+                    if(item.month < curMonth - 1 || item.month > curMonth + 1) return;
+                    if(item.month == curMonth - 1 || item.month == curMonth || item.month == curMonth + 1) {
+
+                    }
+                }
+
+            })*/
+            // console.log(_this.state.signinDates)
+        },
+        calculationDays(){
+            let today = new Date().getTime();
+            let tomorrow = new Date(today + 2 * 86400000);
+            let acquired = new Date(today + 3 * 86400000);
+            let nextAcquired = new Date(today + 4 * 86400000);
+
+            let first = tomorrow.getMonth()+1+'月'+tomorrow.getDate()+'日';
+            let second = acquired.getMonth()+1+'月'+acquired.getDate()+'日';
+            let third = nextAcquired.getMonth()+1+'月'+nextAcquired.getDate()+'日';
+
+            this.state.daysArr[0] = '昨天';
+            this.state.daysArr[1] = '今天';
+            this.state.daysArr[2] = '明天';
+            this.state.daysArr[3] = first;
+            this.state.daysArr[4] = second;
+            this.state.daysArr[5] = third;
+        },
+        signIn() { //签到
+            this.commit('GetCookie', {cvalue: 'id'})
+            let params = {
+                'memberId': _this.state.cookieVals.id
+            }
+            let curParams = Qs.stringify(params);
+            axios.post('/zzjj-app/memberintegral/addSave.do', curParams).then(response=>{
+                if(response.status == 200){
+                    console.log('签到成功');
+                }
+            }).catch(error=>{
+                alert("服务器返回数据错误");
+            })
+        },
         getSceneList(){
             var _this = this;
             _this.commit('GetCookie', {cvalue: "id"});
@@ -33,12 +162,7 @@ const store = new Vuex.Store({
                 'accountId': _this.state.cookieVals.id
             }
             let curParams = Qs.stringify(params);
-            let config = {
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-              }
-            }
-            axios.post('/zzjj-app/customScene/sceneList.do', curParams, config).then(response=>{
+            axios.post('/zzjj-app/customScene/sceneList.do', curParams).then(response=>{
                 console.log('场景查询列表',response);
                 if(response.status == 200){
 
@@ -56,12 +180,7 @@ const store = new Vuex.Store({
                 'accountId': _this.state.cookieVals.id
             }
             let curParams = Qs.stringify(params);
-            let config = {
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-              }
-            }
-            axios.post('/zzjj-app/customlinkage/linkageList.do', curParams, config).then(response=>{
+            axios.post('/zzjj-app/customlinkage/linkageList.do', curParams).then(response=>{
                 console.log('联动查询列表',response);return;
                 if(response.status == 200){
 
@@ -80,12 +199,7 @@ const store = new Vuex.Store({
                 'houseId': '488'
             }
             let curParams = Qs.stringify(params);
-            let config = {
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-              }
-            }
-            axios.post('/zzjj-app/group/listGroup.do', curParams, config).then(response=>{
+            axios.post('/zzjj-app/group/listGroup.do', curParams).then(response=>{
                 console.log('获取房间列表',response); return;
                 if(response.status == 200){
 
@@ -797,7 +911,7 @@ const store = new Vuex.Store({
 						break;
 				}
 				if(item.name){
-          _this.state.eqUl.push(item);
+                    _this.state.eqUl.push(item);
 				}
 			});
 			return _this.state.eqUl;
