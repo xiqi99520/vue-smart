@@ -1,27 +1,28 @@
 <template>
 	<div>
+		<layer v-if="this.$store.state.signInStatusNum" :isStatus="this.$store.state.signInStatusNum" :msg="this.$store.state.signInStatus"></layer>
 		<div class="integral">
 			<h5>您的可用积分</h5>
 			<p class="integral-num">{{ this.$store.state.allIntegral }}</p>
-			<p class="recording">已经连续签到0天</p>
+			<p class="recording">已经连续签到{{ this.$store.state.times }}天</p>
 			<div class="rule"><router-link to="/signInRule">规则 &gt;</router-link></div>
 		</div>
 		<div class="sign-in" :style="'backgroundImage: url('+ signBg +')'">
 			<div class="sign-in-cont">
 				<ul class="integral-val clear">
-					<li v-for="(item,index) in Array(6)" :class="['pull-left','six-equals',index < curTime ? 'active' : '']">+{{ index == 0 ? initIntegral : initIntegral + index - 1 }}</li>
+					<li v-for="(item,index) in this.$store.state.signinDays" :class="['pull-left','six-equals',item == 1 ? 'active' : '']">{{ integralArr[index] }}</li>
 				</ul>
 				<ul class="line">
-					<li class="dot-pos" v-for="(item,index) in Array(6)"> 
-						<em :class="[index < curTime ? 'active' : '']"></em>
-						<div v-if="index >= curTime" class="dot" :style="'backgroundImage: url('+ dot +')'"></div>
+					<li class="dot-pos" v-for="(item,index) in this.$store.state.signinDays"> 
+						<em :class="[item == 1 ? 'active' : '']"></em>
+						<div v-if="item != 1" class="dot" :style="'backgroundImage: url('+ dot +')'"></div>
 					</li>
 				</ul>
 				<ul class="date clear">
 					<li class="pull-left six-equals" v-for="item in this.$store.state.daysArr">{{item}}</li>
 				</ul>
 				<div class="btn-group clear">
-					<button :class="['pull-left', !isclick ? 'is-sign-in' : '']" @click="signIn">签到</button>
+					<button :class="['pull-left', !curSignIn ? 'is-sign-in' : '']" @click="startSignIn">签到</button>
 					<button class="pull-right">抽奖</button>
 				</div>
 			</div>
@@ -42,12 +43,12 @@
 
 <script>
 	import { mapMutations, mapActions } from 'vuex'
+	import layer from '../../common/layer'
 	export default {
 		data(){
 			 return {
-			 	curTime: 1,
+			 	status: 1,
 			 	initIntegral: 5,
-			 	isclick: true,
 			 	signBg: require('../../../assets/user/integral/sign_bg.png'),
 			 	dot: require('../../../assets/user/integral/dot.png'),
 			 	product: require('../../../assets/user/integral/product.jpg'),
@@ -56,20 +57,28 @@
 		},
 		methods: {
 			...mapMutations(['initGifts', 'getIntegral', 'signIn', 'initSign']),
-			signIn(){
-				if(this.isclick){
-					this.curTime++;
-					this.isclick = !this.isclick;
+			startSignIn(){
+				if(this.$store.state.isSignIn){
 					this.signIn();
 					this.getIntegral();
 					return;
 				}
 			}
 		},
+		computed: {
+			curSignIn(){
+				return this.$store.state.isSignIn;
+			},
+			integralArr(){
+				return this.$store.state.integrals;
+			}
+		},
 		created(){
 			this.getIntegral();
 			this.initGifts();
-			console.log('测试:',new Date(1525404314000));
+		},
+		components: {
+			layer
 		}
 	}
 </script>

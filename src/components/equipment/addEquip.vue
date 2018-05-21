@@ -8,7 +8,7 @@
 		<div class="footer">
 			<button class="btn-add-equip" @click="uploadFile">添加设备</button>
 		</div>
-		<layer v-if="isshow" :msg="statusMsg"></layer>
+		<layer v-if="isshow" :isStatus="1" :msg="statusMsg"></layer>
 	</div>
 </template>
 

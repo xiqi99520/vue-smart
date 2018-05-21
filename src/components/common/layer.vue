@@ -10,11 +10,11 @@
 <script>
 	export default {
 		props: {
-			msg: String
+			msg: String,
+			isStatus: Number
 		},
 		data(){
 			return {
-				isStatus: 1,
 				iconSuccess: require('../../assets/common/success.png'),
 				iconFail: require('../../assets/common/fail.png')
 			}
@@ -37,6 +37,7 @@
 		-moz-transform: translate(-50%,-50%);
 		-o-transform: translate(-50%,-50%);
 		transform: translate(-50%,-50%);
+		z-index: 999;
 	}
 	.layer img {
 		width: 4.6rem;

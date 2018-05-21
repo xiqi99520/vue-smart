@@ -24,8 +24,13 @@ const store = new Vuex.Store({
         signinRecord: [],
         signinDates: [],
         curDataArr: [],
-        daysArr: [],
-        signinDays: [0, 0, 0, 0, 0, 0]
+        daysArr: ['', '', '', '', '', ''],
+        signinDays: [0, 0, 0, 0, 0, 0],
+        integrals: ['+5', '', '', '', '', ''],
+        signInStatus: '',
+        signInStatusNum: 0,
+        isSignIn: '',
+        times: 0
     },
     mutations: {
     	modifyStatus(){
@@ -42,7 +47,6 @@ const store = new Vuex.Store({
                     defaultData.map(function(item, index) {
                         _this.state.gifts.push(item);
                     })
-                    console.log('gifts:',_this.state.gifts);
                 }else{
 
                 }
@@ -50,9 +54,9 @@ const store = new Vuex.Store({
                 alert("服务器返回数据错误");
             })
         },
-        getIntegral(){
+        getIntegral(){ //获取当前积分
             let _this = this;
-            this.commit('GetCookie', {cvalue: 'id'})
+            this.commit('GetCookie', {cvalue: 'id'});
             let params = {
                 'memberId': _this.state.cookieVals.id
             }
@@ -65,7 +69,6 @@ const store = new Vuex.Store({
                     response.data.data.map(function(item){
                         _this.state.signinRecord.push(item);
                     })
-                    console.log(123123213);
                     _this.commit('initSign');
                 }else{
 
@@ -77,71 +80,71 @@ const store = new Vuex.Store({
         initSign(){ //检查已签到的记录
             this.commit('calculationDays');
             let _this = this;
-            let today = new Date().getTime();
-            let dataArr = [];
-            let YMD = {};
+            let today = _this.state.curDataArr;
+            let nearYMD = [];
+            let nextYMD = [];
             _this.state.curDataArr['year'] = new Date().getFullYear();
             _this.state.curDataArr['month'] = new Date().getMonth() + 1;
             _this.state.curDataArr['date'] = new Date().getDate();
-            this.state.signinRecord.map((item, index) => {
-                dataArr[index] = item.createDate;
-            })
             _this.state.signinDates.length = 0;
-            console.log('数组',dataArr);
-            dataArr.map((item) => {
-                if(item - today < 0) {
-                    console.log('小于今天');
-                    console.log(new Date(item - today).getDate());
-                } else {
-                    console.log('大于今天');
+            let continuous = this.state.signinRecord[0].integral - 5 + 1; //连续签到几天
+            _this.state.times = continuous;
+            let nearDay = new Date(this.state.signinRecord[0].createDate); //最近一次签到时间
+            nearYMD['year'] = nearDay.getFullYear();
+            nearYMD['month'] = nearDay.getMonth() + 1;
+            nearYMD['date'] = nearDay.getDate();
+            let nextDay = new Date(this.state.signinRecord[0].createDate + 86400000); //最近一次签到时间的次日
+            nextYMD['year'] = nextDay.getFullYear();
+            nextYMD['month'] = nextDay.getMonth() + 1;
+            nextYMD['date'] = nextDay.getDate();
+
+            if(continuous == 1){ //签到次数1天
+                if(nearYMD.year == today.year && nearYMD.month == today.month && nearYMD.date == today.date ){
+                    _this.state.signinDays.splice(1, 1, '1');
+                    _this.state.isSignIn = false;
+                } else if(nextDay.year == today.year && nextDay.month == today.month && nearYMD.date == today.date ){
+                    _this.state.signinDays.splice(0, 1, '1');
                 }
-                // console.log(Math.abs(item - today));
-               if(Math.abs(item - today)) {
-
-               }
-            })
-           dataArr.map((item) => {
-                YMD['year'] = new Date(item).getFullYear();
-                YMD['month'] = new Date(item).getMonth() + 1;
-                YMD['date'] = new Date(item).getDate();
-                // _this.state.signinDates.push(YMD);
-                console.log('日期: ',YMD);
-            }) /*
-            console.log('已经签到的日期:',_this.state.signinDates);
-            console.log('今天:',_this.state.curDataArr);
-            let curYear = _this.state.curDataArr.year;
-            let curMonth = _this.state.curDataArr.month;
-            let curDay = _this.state.curDataArr.date;*/
-            /*_this.state.signinDates.map((item) => {
-                if(item.year < curYear || item.year > curYear) return;
-                if(item.year == curYear) {
-                    if(item.month < curMonth - 1 || item.month > curMonth + 1) return;
-                    if(item.month == curMonth - 1 || item.month == curMonth || item.month == curMonth + 1) {
-
+                for(let i=1; i<6; i++){
+                    _this.state.integrals.splice(i, 1, '+'+(i+4));
+                }
+                console.log(_this.state.integrals);
+            } else {
+                if(nextDay.year == today.year && nextDay.month == today.month && nearYMD.date == today.date ){
+                    let max = continuous - 5 < 0 ? continuous : 5;
+                    for(let i=0; i<max; i++){
+                        _this.state.signinDays.splice(i, 1, '1');
                     }
                 }
-
-            })*/
-            // console.log(_this.state.signinDates)
+            }
         },
-        calculationDays(){
+        prefixTrap(obj, data){//日期前缀补充
+            for(let i=0;i<data.len;i++){
+                for(let j=data.len+1; 5>j>1; j--){
+                    this.state.daysArr[i] = new Date(data.today - j * 86400000).getMonth()+1+'月'+new Date(data.today - j * 86400000).getDate()+'日';
+                }
+            }
+        },
+        suffixTrap(obj, data){//日期后缀补充
+            for(let i=0;i<data.len;i++){
+                this.state.daysArr[i+3] = new Date(data.today + (i+2) * 86400000).getMonth()+1+'月'+new Date(data.today + (i+2) * 86400000).getDate()+'日';
+            }
+        },
+        calculationDays(){//初始化日期
+            let prefix = this.state.signinRecord[0].integral - 5 > 3 ? 3 : this.state.signinRecord[0].integral - 5;
+            let suffix = 6 - 3 - prefix;
             let today = new Date().getTime();
-            let tomorrow = new Date(today + 2 * 86400000);
-            let acquired = new Date(today + 3 * 86400000);
-            let nextAcquired = new Date(today + 4 * 86400000);
+            this.state.daysArr[prefix] = '昨天';
+            this.state.daysArr[prefix + 1] = '今天';
+            this.state.daysArr[prefix + 2] = '明天';
+            this.commit('prefixTrap', {'len': prefix, 'today': today});//填补日期前缀空缺
+            this.commit('suffixTrap', {'len': suffix, 'today': today});//填补日期后缀空缺
+            if(prefix == 3){
 
-            let first = tomorrow.getMonth()+1+'月'+tomorrow.getDate()+'日';
-            let second = acquired.getMonth()+1+'月'+acquired.getDate()+'日';
-            let third = nextAcquired.getMonth()+1+'月'+nextAcquired.getDate()+'日';
-
-            this.state.daysArr[0] = '昨天';
-            this.state.daysArr[1] = '今天';
-            this.state.daysArr[2] = '明天';
-            this.state.daysArr[3] = first;
-            this.state.daysArr[4] = second;
-            this.state.daysArr[5] = third;
+            }
         },
-        signIn() { //签到
+        signIn() { //签到触发
+            let _this = this;
             this.commit('GetCookie', {cvalue: 'id'})
             let params = {
                 'memberId': _this.state.cookieVals.id
@@ -149,11 +152,21 @@ const store = new Vuex.Store({
             let curParams = Qs.stringify(params);
             axios.post('/zzjj-app/memberintegral/addSave.do', curParams).then(response=>{
                 if(response.status == 200){
-                    console.log('签到成功');
+                   _this.commit('signInTip', {msg: '签到成功', status: 1, other: 0});
+                   _this.state.isSignIn = false;
+                } else {
+                   _this.commit('signInTip', {msg: '签到失败', status: 0, other: 1});
                 }
             }).catch(error=>{
                 alert("服务器返回数据错误");
             })
+        },
+        signInTip(obj, data){ //签到弹窗控制
+            this.state.signInStatus = data.msg;
+            this.state.signInStatusNum = data.status;
+            setTimeout(() => {
+                this.state.signInStatusNum = data.other;
+            },1500)
         },
         getSceneList(){
             var _this = this;
@@ -310,7 +323,7 @@ const store = new Vuex.Store({
 				};
 				let curParams = JSON.stringify(params);
 				let config = {
-					'Access-Token': 'OTM2RDJENzk1OTVFMzIxNjZCQ0Q5ODk4QTk0QkU0QjRERkIxNjEyMDQ2MTFENTY0OEFBMURCMzc2Q0RFQTFBRg=='
+					'Access-Token': 'OTcxMUI4QzQ4QkQzMUMzNEVBNDJDNkI0RUQyOEVDMDFEMEZENEM3QTEzRkNFNjcyMzBFQ0U2NTE3MDRDQjA5RQ=='
 				};
 				axios.post('/v2/user_auth', curParams, config).then(response=>{
 					if(response.status == 200){
