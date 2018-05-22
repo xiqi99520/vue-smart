@@ -1,32 +1,15 @@
 <template>
 	<div>
+		<layer v-if="this.$store.state.isshow" :isStatus="this.$store.state.signInStatusNum" :msg="this.$store.state.signInStatus"></layer>
 		<publicHead :title="msg"></publicHead>
 		<router-link to="/schedule" class="btn-search">已兑换商品进度查询</router-link>
 		<div class="exchange">
 			<div class="gift-list flex">
-				<div class="gift">
-					<div class="pic" :style="'backgroundImage: url('+ product +')'"></div>
-					<p>扫地机器人</p>
-					<p class="val">1积分</p>
-					<router-link to="/goodsDetail">立即兑换</router-link>
-				</div>
-				<div class="gift">
-					<div class="pic" :style="'backgroundImage: url('+ product1 +')'"></div>
-					<p>扫地机器人</p>
-					<p class="val">1积分</p>
-					<router-link to="/goodsDetail">立即兑换</router-link>
-				</div>
-				<div class="gift">
-					<div class="pic" :style="'backgroundImage: url('+ product +')'"></div>
-					<p>扫地机器人</p>
-					<p class="val">1积分</p>
-					<router-link to="/goodsDetail">立即兑换</router-link>
-				</div>
-				<div class="gift">
-					<div class="pic" :style="'backgroundImage: url('+ product1 +')'"></div>
-					<p>扫地机器人</p>
-					<p class="val">1积分</p>
-					<router-link to="/goodsDetail">立即兑换</router-link>
+				<div class="gift" v-for="(item,index) in goodsListArr">
+					<div class="pic" :style="'backgroundImage: url('+ item.imageUrl1 +')'"></div>
+					<p>{{ item.goodsName }}</p>
+					<p class="val">{{ item.integral }}积分</p>
+					<router-link :to="{path: '/goodsDetail', query: {cur: index}}">立即兑换</router-link>
 				</div>
 			</div>
 		</div>
@@ -35,6 +18,8 @@
 
 <script>
 	import publicHead from '../../common/publicHeader'
+	import layer from '../../common/layer'
+	import { mapMutations, mapGetters } from 'vuex'
 	export default {
 		data() {
 			return {
@@ -44,7 +29,17 @@
 			}
 		},
 		components: {
-			publicHead
+			publicHead,
+			layer
+		},
+		computed: {
+			...mapGetters(['goodsListArr'])
+		},
+		methods: {
+			...mapMutations(['initGoodsList'])
+		},
+		mounted(){
+			this.initGoodsList();
 		}
 	}
 </script>

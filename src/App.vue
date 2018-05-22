@@ -145,4 +145,40 @@
             padding-bottom: 0;
         }
     }
+    .blur {
+        /* Chrome, Opera */
+        -webkit-filter: blur(10px);
+
+        -moz-filter: blur(10px);
+        -ms-filter: blur(10px);
+        filter: blur(10px);
+
+        /* IE6~IE9 */
+        filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=10, MakeShadow=false);
+    }
+
+    .show {
+        animation: toggleBlur .6s linear 0s 1 forwards;
+    }
+
+    @keyframes toggleBlur {
+        0% {
+            -webkit-filter: blur(10px);
+            /* Chrome, Opera */
+            -moz-filter: blur(10px);
+            -ms-filter: blur(10px);
+            filter: blur(10px);
+            filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=10, MakeShadow=false);
+            /* IE6~IE9 */
+        }
+        100% {
+            -webkit-filter: blur(0px);
+            /* Chrome, Opera */
+            -moz-filter: blur(0px);
+            -ms-filter: blur(0px);
+            filter: blur(0px);
+            filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=0, MakeShadow=false);
+            /* IE6~IE9 */
+        }
+    }
 </style>

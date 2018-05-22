@@ -27,6 +27,7 @@
 
 <script>
 	import publicHead from '../../common/publicHeader'
+	import { mapGetters } from 'vuex'
 	export default {
 		data() {
 			return {
@@ -38,12 +39,10 @@
 			publicHead
 		},
 		computed: {
+			...mapGetters(['goodsListArr']),
 			goods(){
-				return this.$store.state.gifts[this.$route.query.cur]
+				return this.goodsListArr[this.$route.query.cur]
 			}
-		},
-		created(){
-			console.log(this.$store.state.gifts);
 		}
 	}
 </script>

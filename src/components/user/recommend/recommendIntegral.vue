@@ -1,28 +1,15 @@
 <template>
 	<div>
 	    <div>
-	    	<ul class="integral-list">
-				<li>
+	    	<ul class="integral-list" v-if="recommendIntegrals.length">
+				<li v-for="(item,index) in recommendIntegrals">
 	    			<span class="sr_point"></span>
-	    			<p class="sr_num">+200</p>
-	    			<p class="sr_sign">绑定送积分</p>
-	    			<p class="sr_date">2018-02-05 20:30</p>
-	    		</li>
-	    		<li>
-	    			<span class="sr_point"></span>
-	    			<p class="sr_num">+200</p>
-	    			<p class="sr_sign">绑定送积分</p>
-	    			<p class="sr_date">2018-02-05 20:30</p>
-	    		</li>
-	    		<li>
-	    			<span class="sr_point"></span>
-	    			<p class="sr_num">+200</p>
-	    			<p class="sr_sign">绑定送积分</p>
-	    			<p class="sr_date">2018-02-05 20:30</p>
+	    			<p class="sr_num">+{{ item.integral }}</p>
+	    			<p class="sr_sign">{{ item.mark }}</p>
+	    			<p class="sr_date">{{ item.createDate | formatDate }}</p>
 	    		</li>
 	    	</ul>
-
-	    	<div class="nodata hide">
+	    	<div class="nodata" v-if="!recommendIntegrals.length">
 		  		<p class="nodata-pic">
 		  			<img :src="nodata" />
 		  		</p>
@@ -35,10 +22,27 @@
 </template>
 
 <script>
+	import { mapMutations, mapGetters } from 'vuex'
+	import { formatDate } from '../../common/formatDate'
 	export default {
 		data(){
 			return {
 				nodata: require('../../../assets/user/recommend/null.png')
+			}
+		},
+		computed: {
+			...mapGetters(['recommendIntegrals'])
+		},
+		methods: {
+			...mapMutations(['initRecommendIntegral'])
+		},
+		created() {
+			this.initRecommendIntegral();
+		},
+		filters: {
+			formatDate(time) {
+				let date = new Date(time);
+				return formatDate(date, 'yyyy-MM-dd hh:ss')
 			}
 		}
 	}

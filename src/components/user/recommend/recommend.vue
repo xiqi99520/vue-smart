@@ -1,12 +1,12 @@
 <template>
-	<div>
+	<div :class="['blur',isblurState ? '' : 'show']">
 		<publicHead :title="msg"></publicHead>
 		<div class="recommend-bg" :style="'backgroundImage: url('+ recommendBg +')'">
 			<div class="invite">
 				<p class="header">邀请<span>16</span>人,奖励价值<span>147</span>元充电宝</p>
 				<img class="giftPic" :src="giftPic" alt="">
 				<p class="person-num">成功邀请人数</p>
-				<div class="invite-num" :style="'backgroundImage: url('+ recommendNumBg +')'">0</div>
+				<div class="invite-num" :style="'backgroundImage: url('+ recommendNumBg +')'">{{ successNum }}</div>
 				<p class="invite-code">我的邀请码: 18888</p>
 				<router-link class="rule" to="/rule">查看奖励规则 &gt;</router-link>
 				<div class="btn-group clear">
@@ -15,7 +15,7 @@
 				</div>
 				<router-link class="recruit" to="/productRecruit">产品体验官招募 &gt;</router-link>
 				<div class="integral clear">
-					<div class="pull-left">已获得积分: <span class="num">0</span>分</div>
+					<div class="pull-left">已获得积分: <span class="num">{{ countPoint }}</span>分</div>
 					<div class="pull-right btn-find"><router-link to="/recommendIntegral">查看 &gt;</router-link></div>
 				</div>
 			</div>
@@ -25,6 +25,7 @@
 
 <script>
 	import publicHead from '../../common/publicHeader'
+	import { mapMutations, mapGetters } from 'vuex'
 	export default {
 		data() {
 			return {
@@ -36,6 +37,16 @@
 		},
 		components: {
 			publicHead
+		},
+		computed: {
+			...mapGetters(['successNum', 'countPoint', 'isblurState'])
+		},
+		methods: {
+			...mapMutations(['initRecommend', 'initCountPoint'])
+		},
+		created() {
+			this.initRecommend();
+			this.initCountPoint();
 		}
 	}
 </script>
