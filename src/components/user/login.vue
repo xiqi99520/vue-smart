@@ -20,12 +20,18 @@
 		data() {
 			return {
 				loginBg: require('../../assets/user/login/login_bg.jpg'),
-				toggle: true
 			}
 		},
-		watch: {
-            '$route'(to,from){
-                this.toggle = !this.toggle;
+        computed: {
+            toggle() {
+                switch( this.$route.fullPath ) {
+                    case '/login' :
+                        return true;
+                        break;
+                    default :
+                        return false;
+                        break;
+                }
             }
         }
 	}

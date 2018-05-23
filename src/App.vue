@@ -10,6 +10,7 @@
 
 <script>
     import Vue from 'vue'
+    import { mapMutations } from 'vuex'
     export default {
         name: 'App',
         data(){
@@ -18,11 +19,11 @@
                 isopen: false
             }
         },
-        created() {
-            
-        },
         methods: {
-
+            ...mapMutations(['isLogin'])
+        },
+        created() {
+            this.isLogin();
         }
     }
 </script>

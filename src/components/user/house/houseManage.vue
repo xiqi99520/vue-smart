@@ -3,9 +3,8 @@
 		<publicHead :title="msg" :rightMenu="rightMenu" :toUrl="create"></publicHead>
 		<ul>
 			<li class="clear manage">
-				<a href=""></a>
 				<p class="pull-left title">名称</p>
-				<span class="pull-right cur-house-name">{{ curName }}</span>
+				<span class="pull-right cur-house-name"><input type="text" :value="curName" /></span>
 				<img class="pull-right arrow-right" :src="iconRight" alt="" />
 			</li>
 			<li class="clear manage">
@@ -33,12 +32,16 @@
 				msg: '房屋管理',
 				rightMenu: '创建',
 				create: '/create',
-				curName: this.$route.params.name,
 				curHouseSrc: require('../../../assets/index/avatar.png')
 			}
 		},
 		components: {
 			publicHead
+		},
+		computed: {
+			curName(){
+				return this.$store.state.houseManagerList[this.$route.params.name].name;
+			}
 		},
 		methods: {
 			/*handkeFileChange() { //图片上传 - 老方法
@@ -131,6 +134,11 @@
 		height: 2.4rem;
 		line-height: 2.4rem;
 		margin-right: 2rem;
+	}
+	.manage .cur-house-name input {
+		outline: none;
+		border: none;
+		text-align: right;
 	}
 	.btn-group {
 		margin-top: 4rem;

@@ -1,17 +1,18 @@
 <template>
 	<div>
+		<layer v-if="this.$store.state.isshow" :isStatus="this.$store.state.signInStatusNum" :msg="this.$store.state.signInStatus"></layer>
 		<div class="login">
 			<div class="username input-area flex">
 				<div class="icon">
 					<img :src="phone" alt="">
 				</div>
-				<input type="text" placeholder="请输入手机号" autocomplete="off" />
+				<input type="text" ref="username" placeholder="请输入手机号" autocomplete="off" />
 			</div>
 			<div class="password input-area flex">
 				<div class="icon">
 					<img :src="password" alt="">
 				</div>
-				<input type="password" placeholder="输入密码" autocomplete="off" />
+				<input type="password" ref="password" placeholder="输入密码" autocomplete="off" />
 			</div>
 			<div class="btn-login" @click="goto">登入</div>
 		</div>
@@ -20,6 +21,7 @@
 
 <script>
 	import { mapState, mapMutations } from 'vuex'
+	import layer from '../../common/layer'
 	export default {
 		data(){
 			return {
@@ -27,18 +29,17 @@
 				password: require('../../../assets/user/login/password.png')
 			}
 		},
-		computed: {
-			...mapState(['user']),
-		},
 		methods: {
-			...mapMutations(['modifyStatus']),
+			...mapMutations(['modifyStatus', 'toLogin']),
 			goto(){
 				let _this = this;
-				_this.modifyStatus();
-				if(_this.user){
-					_this.$router.push({path: '/user'});
-				}
+				let username = _this.$refs.username.value;
+				let password = _this.$refs.password.value;
+				_this.toLogin({user: username, password: password});
 			}
+		},
+		components: {
+			layer
 		}
 	}
 </script>

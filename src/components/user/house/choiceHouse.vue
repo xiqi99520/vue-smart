@@ -2,10 +2,10 @@
 	<div>
 		<publicHead :title="msg" :rightMenu="rightMenu" :toUrl="create"></publicHead>
 		<ul>
-			<li class="clear choice" v-for="item in securityList">
-				<router-link :to="item.url"></router-link>
-				<img class="pull-left house-avatar" :src="item.src" alt="">
-				<p class="pull-left title">{{ item.title }}</p>
+			<li class="clear choice" v-for="(item,index) in houseManagerList">
+				<router-link :to="{path: '/houseManage/'+ index }"></router-link>
+				<img class="pull-left house-avatar" :src="[item.imgUrl ? item.imgUrl : defaultPic]" alt="房屋头像">
+				<p class="pull-left title">{{ item.name }}{{ item.isDefault == 0 ? '(默认)' : '' }}</p>
 				<img class="pull-right arrow-right" :src="iconRight" alt="" />
 			</li>
 		</ul>
@@ -14,29 +14,28 @@
 
 <script>
 	import publicHead from '../../common/publicHeader'
+	import { mapMutations, mapGetters } from 'vuex'
 	export default {
 		data() {
 			return {
 				iconRight: require('../../../assets/common/arrow_right.png'),
+				defaultPic: require('../../../assets/index/avatar.png'),
 				msg: '选择房屋',
 				rightMenu: '创建',
-				create: '/create',
-				securityList: [
-					{
-						title: '我的房屋(默认)',
-						url: '/houseManage/我的房屋(默认)',
-						src: require('../../../assets/index/avatar.png')
-					},
-					{
-						title: '我的房屋1',
-						url: '/houseManage/我的房屋1',
-						src: require('../../../assets/index/avatar.png')
-					}
-				]
+				create: '/create'
 			}
 		},
 		components: {
 			publicHead
+		},
+		methods: {
+			...mapMutations(['initHouseList'])
+		},
+		computed: {
+			...mapGetters(['houseManagerList'])
+		},
+		mounted(){
+			this.initHouseList();
 		}
 	}
 </script>

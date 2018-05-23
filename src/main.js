@@ -8,16 +8,16 @@ Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  store,
-  components: { App },
-  template: '<App/>'
+    el: '#app',
+    router,
+    store,
+    components: { App },
+    template: '<App/>'
 })
 
 router.beforeEach((to, from, next) => {
-    if(to.meta.auth) { //是否验证
-        if(store.state.user) { //是否登录
+    if (to.meta.auth) { //是否验证
+        if (store.state.user) { //是否登录
             next()
         } else { //未登录则跳转到登录页面
             next('/login')

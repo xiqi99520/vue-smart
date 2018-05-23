@@ -7,12 +7,13 @@
 				<img class="pull-right" :src="iconRight" alt="" />
 			</li>
 		</ul>
-		<div class="sign-toggle">退出登入</div>
+		<div class="sign-toggle" @click="signOut">退出登入</div>
 	</div>
 </template>
 
 <script>
 	import publicHead from '../../common/publicHeader'
+	import { mapMutations } from 'vuex'
 	export default {
 		data() {
 			return {
@@ -42,6 +43,7 @@
 			publicHead
 		},
 		methods: {
+			...mapMutations(['signOut']),
 			toUrl(url){
 				this.$router.push(url)
 			}

@@ -1,34 +1,48 @@
 <template>
 	<div>
+		<layer v-if="this.$store.state.isshow" :isStatus="this.$store.state.signInStatusNum" :msg="this.$store.state.signInStatus"></layer>
 		<div class="login">
 			<div class="username input-area flex">
 				<div class="icon">
 					<img :src="phone" alt="">
 				</div>
-				<input type="text" placeholder="请输入手机号" autocomplete="off" />
+				<input type="text" ref="phonenum" placeholder="请输入手机号" autocomplete="off" />
 			</div>
 			<div class="flex">
 				<div class="password input-area flex">
 					<div class="icon icon-verificatione">
 						<img :src="password" alt="">
 					</div>
-					<input type="text" placeholder="输入密码" autocomplete="off" />
+					<input type="text" ref="codes" placeholder="输入密码" autocomplete="off" />
 				</div>
-				<div class="input-area get-verificatione">获取验证码</div>
+				<div class="input-area get-verificatione" @click="getCode">获取验证码</div>
 			</div>
-			
-			<button class="btn-login">立即登入</button>
+			<button type="button" class="btn-login" @click="codeLogin">立即登入</button>
 		</div>
 	</div>
 </template>
 
 <script>
+	import { mapMutations } from 'vuex'
+	import layer from '../../common/layer'
 	export default {
 		data(){
 			return {
 				phone: require('../../../assets/user/login/phone.png'),
 				password: require('../../../assets/user/login/password.png')
 			}
+		},
+		methods: {
+			...mapMutations(['getVerification', 'verificationLogin']),
+			getCode(){
+				this.getVerification({number: this.$refs.phonenum.value});
+			},
+			codeLogin(){
+				this.verificationLogin({number: this.$refs.phonenum.value, codes: this.$refs.codes.value});
+			}
+		},
+		components: {
+			layer
 		}
 	}
 </script>
@@ -43,7 +57,9 @@
 		width: 80%;
 		height: 3rem;
 		line-height: 3rem;
+		color: #fff;
 		border: none;
+		outline: none;
 		background-color: transparent;
 	}
 	.login .input-area {
