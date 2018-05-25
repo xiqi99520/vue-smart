@@ -3,6 +3,8 @@ import App from './App'
 import router from './router'
 import store from './store/index'
 import axios from 'axios'
+import storage from './utils/storage'
+
 
 Vue.config.productionTip = false
 
@@ -26,6 +28,9 @@ router.beforeEach((to, from, next) => {
         next()
     }
 })
-
-Vue.prototype.$axios = axios
+router.afterEach((to,from,next) => {
+  window.scrollTo(0,0);
+});
+Vue.prototype.$axios = axios;
+Vue.prototype.$storage = storage;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';

@@ -1,20 +1,23 @@
 <template>
 	<div class="host">
+		<layer v-if="this.$store.state.isshow" :isStatus="this.$store.state.signInStatusNum" :msg="this.$store.state.signInStatus"></layer>
 		<publicHead :title="msg"></publicHead>
 		<img class="host-pic" :src="hostPic" alt="">
 		<h5>智能主机</h5>
 		<div class="equi-info">
 			<ul>
-				<li class="clear"><span class="pull-left">设备数</span><span class="pull-right">4</span></li>
-				<li class="clear"><span class="pull-left">MAC地址</span><span class="pull-right">123.456.789.000</span></li>
+				<li class="clear"><span class="pull-left">设备数</span><span class="pull-right">{{ hostNum }}</span></li>
+				<li class="clear"><span class="pull-left">MAC地址</span><span class="pull-right">{{ macAddress }}</span></li>
 			</ul>
 		</div>
-		<button class="btn-del">删除主机</button>
+		<button class="btn-del" :style="'opacity:'+ curOpacity" @click="delHost">删除主机</button>
 	</div>
 </template>
 
 <script>
 	import publicHead from '../common/publicHeader'
+	import layer from '../common/layer'
+	import { mapState, mapMutations, mapGetters } from 'vuex'
 	export default {
 		data() {
 			return {
@@ -23,7 +26,18 @@
 			}
 		},
 		components: {
-			publicHead
+			publicHead,
+			layer
+		},
+		computed: {
+			...mapState(['macAddress', 'curOpacity']),
+			...mapGetters(['hostNum'])
+		},
+		methods: {
+			...mapMutations(['initHost', 'delHost'])
+		},
+		created(){
+			this.initHost();
 		}
 	}
 </script>

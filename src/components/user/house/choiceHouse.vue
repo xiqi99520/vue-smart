@@ -14,7 +14,7 @@
 
 <script>
 	import publicHead from '../../common/publicHeader'
-	import { mapMutations, mapGetters } from 'vuex'
+	import { mapState, mapMutations, mapGetters } from 'vuex'
 	export default {
 		data() {
 			return {
@@ -32,7 +32,7 @@
 			...mapMutations(['initHouseList'])
 		},
 		computed: {
-			...mapGetters(['houseManagerList'])
+			...mapState(['houseManagerList'])
 		},
 		mounted(){
 			this.initHouseList();

@@ -1,5 +1,5 @@
 <template>
-	<div :class="['blur',isblurState ? '' : 'show']">
+	<div :class="['blur', isblur ? '' : 'show']">
 		<publicHead :title="msg"></publicHead>
 		<div class="recommend-bg" :style="'backgroundImage: url('+ recommendBg +')'">
 			<div class="invite">
@@ -25,7 +25,7 @@
 
 <script>
 	import publicHead from '../../common/publicHeader'
-	import { mapMutations, mapGetters } from 'vuex'
+	import { mapState, mapMutations, mapGetters } from 'vuex'
 	export default {
 		data() {
 			return {
@@ -39,7 +39,7 @@
 			publicHead
 		},
 		computed: {
-			...mapGetters(['successNum', 'countPoint', 'isblurState'])
+			...mapState(['successNum', 'countPoint', 'isblur'])
 		},
 		methods: {
 			...mapMutations(['initRecommend', 'initCountPoint'])

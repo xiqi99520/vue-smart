@@ -1,9 +1,9 @@
 <template>
 	<div class="equipment">
-        <div v-if="nodata" class="add" @click="addUrl">
+        <div v-if="!user" class="add" @click="addUrl">
             <span class="add-symbol">+</span><span class="add-tip">点击添加设备</span>
         </div>
-        <div class="equipment-list">
+        <div v-if="user" class="equipment-list">
             <div class="pull-left single" v-for="(item,index) in eqUl">
                 <div class="area" :data-cur="index">
                     <router-link :to="{ path: '/sersor', query: { cur: index }}" :style="'backgroundImage:url('+ more +')'"></router-link>
@@ -25,20 +25,24 @@
 			}
 		},
         computed: {
-            ...mapState(['nodata','eqUl'])
+            ...mapState(['user','eqUl', 'nodata'])
         },
 		methods: {
-            ...mapMutations(['getToken', 'getListen', 'getSend', 'getSdkEqMsg']),
+            ...mapMutations(['isLogin', 'getToken', 'getListen', 'getSend', 'getSdkEqMsg']),
             addUrl(){
+                if(!this.$store.state.user) {
+                    this.$router.push('/login');
+                    return;
+                }
                 this.$router.push('/add');
             }
         },
         created(){
+            this.isLogin();
             if(82437){
                 if(!this.$store.socketObj){
                     this.getToken();
                 }else{
-                    console.log(3);
                     this.getListen();
                     this.getSend(); 
                     this.getSdkEqMsg();

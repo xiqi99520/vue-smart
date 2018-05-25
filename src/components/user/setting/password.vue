@@ -1,21 +1,24 @@
 <template>
 	<div>
+		<layer v-if="this.$store.state.isshow" :isStatus="this.$store.state.signInStatusNum" :msg="this.$store.state.signInStatus"></layer>
 		<publicHead :title="msg"></publicHead>
 		<div class="psw">
-			<input type="text" placeholder="请输入手机号" />
+			<input type="text" ref="phonenum" placeholder="请输入手机号" />
 			<div class="flex verification">
-				<input class="code" type="text" placeholder="请输入验证码" />
-				<span class="title">获取验证码</span>
+				<input class="code" type="text" ref="codes" placeholder="请输入验证码" />
+				<span class="title" @click="fixCode">获取验证码</span>
 			</div>
-			<input type="text" placeholder="请输入新密码" />
-			<input type="text" placeholder="请确认新密码" />
-			<button class="btn-modify">立即修改</button>
+			<input type="password" ref="password" placeholder="请输入新密码" />
+			<input type="password" ref="confirm" placeholder="请确认新密码" />
+			<button class="btn-modify" @click="getfix">立即修改</button>
 		</div>
 	</div>
 </template>
 
 <script>
 	import publicHead from '../../common/publicHeader'
+	import layer from '../../common/layer'
+	import { mapMutations } from 'vuex'
 	export default {
 		data() {
 			return {
@@ -23,7 +26,17 @@
 			}
 		},
 		components: {
-			publicHead
+			publicHead,
+			layer
+		},
+		methods: {
+			...mapMutations(['submitFix', 'getFixCode']),
+			getfix(){
+				this.submitFix({number: this.$refs.phonenum.value, codes: this.$refs.codes.value, psw: this.$refs.password.value, surePsw: this.$refs.confirm.value});
+			},
+			fixCode(){
+				this.getFixCode({number: this.$refs.phonenum.value});
+			}
 		}
 	}
 </script>

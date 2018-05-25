@@ -90,7 +90,8 @@ export default {
             this.$axios.post('/v2/user/452872041/qrcode_subscribe', newparams, config).then(response => {
                 _this.setHostType();
             }).catch((error) => {
-                alert('您已绑定设备');
+                console.log('您已绑定设备');
+                this.$store.state.nodata = false;
                 this.$router.push('/');
                 let text = JSON.parse(error.responseText);
 

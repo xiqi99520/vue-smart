@@ -67,6 +67,7 @@ const EditAddress = r => require.ensure([], () => r(require('@/components/user/i
 const Login = r => require.ensure([], () => r(require('@/components/user/login')), 'Login')
 const Log = r => require.ensure([], () => r(require('@/components/user/login/login')), 'Login')
 const Verificatione = r => require.ensure([], () => r(require('@/components/user/login/verificatione')), 'Login')
+const Register = r => require.ensure([], () => r(require('@/components/user/register')), 'Login')
 
 Vue.use(Router)
 
@@ -292,6 +293,10 @@ export default new Router({
 					component: Verificatione
 				}
 			]
+		}, {
+			path: '/register',
+			name: 'Register',
+			component: Register
 		}
 	]
 })

@@ -1,10 +1,10 @@
 <template>
-    <div :class="['blur',isblurState ? '' : 'show']">
+    <div :class="['blur',isblur ? '' : 'show']">
         <layer v-if="this.$store.state.isshow" :isStatus="this.$store.state.signInStatusNum" :msg="this.$store.state.signInStatus"></layer>
         <div class="integral">
             <h5>您的可用积分</h5>
             <p class="integral-num">{{ this.$store.state.allIntegral || 0 }}</p>
-            <p class="recording">已经连续签到{{ this.$store.state.times }}天</p>
+            <p class="recording">已经连续签到{{ continueTimes }}天</p>
             <div class="rule">
                 <router-link to="/signInRule">规则 &gt;</router-link>
             </div>
@@ -34,7 +34,7 @@
                 <router-link to="/goodsList" class="more">更多 &gt;</router-link>
             </div>
             <div class="gift-list flex">
-                <div class="gift" v-for="(item,index) in gifts">
+                <div class="gift" v-for="(item,index) in goodsList.slice(0,2)">
                     <div class="pic" :style="'backgroundImage: url('+ item.imageUrl1 +')'"></div>
                     <p>{{ item.goodsName }}</p>
                     <p class="val">{{ item.integral }}积分</p>
@@ -45,7 +45,7 @@
     </div>
 </template>
 <script>
-import { mapMutations, mapActions, mapGetters } from 'vuex'
+import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
 import layer from '../../common/layer'
 export default {
     data() {
@@ -69,7 +69,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['isblurState','gifts']),
+        ...mapState(['isblur', 'goodsList', 'continueTimes']),
         curSignIn() {
             return this.$store.state.isSignIn;
         },

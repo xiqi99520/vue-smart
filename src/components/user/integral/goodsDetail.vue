@@ -27,7 +27,7 @@
 
 <script>
 	import publicHead from '../../common/publicHeader'
-	import { mapGetters } from 'vuex'
+	import { mapMutations, mapGetters } from 'vuex'
 	export default {
 		data() {
 			return {
@@ -43,6 +43,12 @@
 			goods(){
 				return this.goodsListArr[this.$route.query.cur]
 			}
+		},
+		methods: {
+			...mapMutations(['goodsArr'])
+		},
+		created(){
+			this.goodsArr();
 		}
 	}
 </script>

@@ -22,8 +22,8 @@
 </template>
 
 <script>
-	import { mapMutations, mapGetters } from 'vuex'
-	import { formatDate } from '../../common/formatDate'
+	import { mapState, mapMutations, mapGetters } from 'vuex'
+	import { formatDate } from '../../../utils/formatDate'
 	export default {
 		data(){
 			return {
@@ -31,7 +31,7 @@
 			}
 		},
 		computed: {
-			...mapGetters(['recommendIntegrals'])
+			...mapState(['recommendIntegrals'])
 		},
 		methods: {
 			...mapMutations(['initRecommendIntegral'])

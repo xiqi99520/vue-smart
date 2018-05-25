@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<div class="login-bg" :style="'backgroundImage: url('+ loginBg +')'">
 		<layer v-if="this.$store.state.isshow" :isStatus="this.$store.state.signInStatusNum" :msg="this.$store.state.signInStatus"></layer>
-		<div class="login">
+		<div class="login login-pos">
 			<div class="username input-area flex">
 				<div class="icon">
 					<img :src="phone" alt="">
@@ -17,28 +17,43 @@
 				</div>
 				<div class="input-area get-verificatione" @click="getCode">获取验证码</div>
 			</div>
-			<button type="button" class="btn-login" @click="codeLogin">立即登入</button>
+			<div class="username input-area flex">
+				<div class="icon">
+					<img :src="setPsw" alt="">
+				</div>
+				<input type="password" ref="password" placeholder="设置密码" autocomplete="off" />
+			</div>
+			<div class="username input-area flex">
+				<div class="icon">
+					<img :src="surePsw" alt="">
+				</div>
+				<input type="password" ref="confirm" placeholder="确认密码" autocomplete="off" />
+			</div>
+			<button type="button" class="btn-login" @click="register">提交注册</button>
 		</div>
 	</div>
 </template>
 
 <script>
 	import { mapMutations } from 'vuex'
-	import layer from '../../common/layer'
+	import layer from '../common/layer'
 	export default {
-		data(){
+		data() {
 			return {
-				phone: require('../../../assets/user/login/phone.png'),
-				password: require('../../../assets/user/login/password.png')
+				loginBg: require('../../assets/user/login/login_bg.jpg'),
+				phone: require('../../assets/user/login/phone.png'),
+				password: require('../../assets/user/login/password.png'),
+				setPsw: require('../../assets/user/login/set_psw.png'),
+				surePsw: require('../../assets/user/login/sure_psw.png')
 			}
 		},
 		methods: {
-			...mapMutations(['getVerification', 'verificationLogin']),
-			getCode(){
-				this.getVerification({number: this.$refs.phonenum.value});
+			...mapMutations(['getRegisterCode', 'submitRegister']),
+			register(){
+				this.submitRegister({number: this.$refs.phonenum.value, codes: this.$refs.codes.value, psw: this.$refs.password.value, surePsw: this.$refs.confirm.value});
 			},
-			codeLogin(){
-				this.verificationLogin({number: this.$refs.phonenum.value, codes: this.$refs.codes.value});
+			getCode(){
+				this.getRegisterCode({number: this.$refs.phonenum.value});
 			}
 		},
 		components: {
@@ -48,6 +63,28 @@
 </script>
 
 <style scoped>
+	.login-bg {
+		width: 100%;
+		height: 100%;
+		position: fixed;
+		left: 50%;
+		top: 0;
+		background-size: cover;
+		background-position: center;
+		max-width: 480px;
+    	-webkit-transform: translateX(-50%);
+    	-moz-transform: translateX(-50%);
+    	-o-transform: translateX(-50%);
+    	transform: translateX(-50%);
+	}
+	.login-pos {
+	    width: 80%;
+	    position: absolute;
+	    top: 48%;
+	    left: 50%;
+	    -webkit-transform: translate(-50%,-50%);
+	    transform: translate(-50%,-50%);
+	}
 	.login img{
 		width: 1rem;
 		position: relative;
