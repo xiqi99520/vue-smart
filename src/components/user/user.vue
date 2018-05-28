@@ -5,18 +5,18 @@
 		</div>
 		<div class="info-card">
 			<img class="photo" :src="userPic" alt="">
-			<p class="user-name">刘阳</p>
+			<p class="user-name">{{ username }}</p>
 			<div class="flex item">
 				<div class="trisection num">
-					<p>18</p>
+					<p>{{ eqLen }}</p>
 					<p class="name">设备</p>
 				</div>
 				<div class="trisection family">
-					<p>6</p>
+					<p>{{ familyNum }}</p>
 					<p class="name">家人</p>
 				</div>
 				<div class="trisection integral">
-					<p>35</p>
+					<p>{{ allIntegral }}</p>
 					<p class="name">积分</p>
 				</div>
 			</div>
@@ -37,6 +37,7 @@
 
 <script>
 	import indexnav from '../common/navFooter'
+	import { mapState, mapMutations } from 'vuex'
 	export default {
 		data(){
 			return {
@@ -94,8 +95,18 @@
 		},
 		components: {
 			indexnav
+		},
+		methods: {
+			...mapMutations(['initUser', 'initFamily', 'getIntegral'])
+		},
+		computed: {
+			...mapState(['username', 'eqLen', 'allIntegral', 'familyNum'])
+		},
+		created() {
+			this.initUser();
+			this.initFamily();
+			this.getIntegral();
 		}
-
 	}
 </script>
 

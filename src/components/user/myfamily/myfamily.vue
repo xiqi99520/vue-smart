@@ -23,6 +23,7 @@
 
 <script>
 	import publicHead from '../../common/publicHeader'
+	import { mapMutations } from 'vuex'
 	export default {
 		data() {
 			return {
@@ -48,6 +49,12 @@
 		},
 		components: {
 			publicHead
+		},
+		methods: {
+			...mapMutations(['initFamily'])
+		},
+		created() {
+			this.initFamily();
 		}
 	}
 </script>

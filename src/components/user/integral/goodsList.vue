@@ -5,7 +5,7 @@
 		<router-link to="/schedule" class="btn-search">已兑换商品进度查询</router-link>
 		<div class="exchange">
 			<div class="gift-list flex">
-				<div class="gift" v-for="(item,index) in goodsListArr">
+				<div class="gift" v-for="(item,index) in goodsList">
 					<div class="pic" :style="'backgroundImage: url('+ item.imageUrl1 +')'"></div>
 					<p>{{ item.goodsName }}</p>
 					<p class="val">{{ item.integral }}积分</p>
@@ -19,7 +19,7 @@
 <script>
 	import publicHead from '../../common/publicHeader'
 	import layer from '../../common/layer'
-	import { mapMutations, mapGetters } from 'vuex'
+	import { mapState, mapMutations, mapGetters } from 'vuex'
 	export default {
 		data() {
 			return {
@@ -33,7 +33,7 @@
 			layer
 		},
 		computed: {
-			...mapGetters(['goodsListArr'])
+			...mapState(['goodsList'])
 		},
 		methods: {
 			...mapMutations(['initGoodsList'])

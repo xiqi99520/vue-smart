@@ -3,7 +3,7 @@
         <layer v-if="this.$store.state.isshow" :isStatus="this.$store.state.signInStatusNum" :msg="this.$store.state.signInStatus"></layer>
         <div class="integral">
             <h5>您的可用积分</h5>
-            <p class="integral-num">{{ this.$store.state.allIntegral || 0 }}</p>
+            <p class="integral-num">{{ allIntegral || 0 }}</p>
             <p class="recording">已经连续签到{{ continueTimes }}天</p>
             <div class="rule">
                 <router-link to="/signInRule">规则 &gt;</router-link>
@@ -50,8 +50,6 @@ import layer from '../../common/layer'
 export default {
     data() {
         return {
-            status: 1,
-            initIntegral: 5,
             signBg: require('../../../assets/user/integral/sign_bg.png'),
             dot: require('../../../assets/user/integral/dot.png'),
             product: require('../../../assets/user/integral/product.jpg'),
@@ -69,7 +67,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['isblur', 'goodsList', 'continueTimes']),
+        ...mapState(['isblur', 'goodsList', 'continueTimes', 'allIntegral']),
         curSignIn() {
             return this.$store.state.isSignIn;
         },
@@ -80,6 +78,7 @@ export default {
     created() {
         this.getIntegral();
         this.initGifts();
+        console.log(new Date(1527235111000));
     },
     components: {
         layer

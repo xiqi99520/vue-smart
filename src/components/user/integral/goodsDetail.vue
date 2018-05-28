@@ -27,7 +27,7 @@
 
 <script>
 	import publicHead from '../../common/publicHeader'
-	import { mapMutations, mapGetters } from 'vuex'
+	import { mapState, mapMutations, mapGetters } from 'vuex'
 	export default {
 		data() {
 			return {
@@ -39,9 +39,9 @@
 			publicHead
 		},
 		computed: {
-			...mapGetters(['goodsListArr']),
+			...mapState(['goodsList']),
 			goods(){
-				return this.goodsListArr[this.$route.query.cur]
+				return this.goodsList[this.$route.query.cur]
 			}
 		},
 		methods: {

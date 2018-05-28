@@ -17,6 +17,7 @@ const store = new Vuex.Store({
         devices: [],
         ws: null,
         eqUl: [],
+        eqLen: '',
         baseScene: [],
         YzyEqUl: [],
         sersorName: '',
@@ -34,13 +35,50 @@ const store = new Vuex.Store({
         isSignIn: '',
         continueTimes: 0,
         goodsList: [],
+        macAddress: '',
         isblur: 1,
         successNum: '',
         countPoint: '',
         recommendIntegrals: [],
-        houseManagerList: []
+        houseManagerList: [],
+        username: '',
+        familyNum: ''
     },
     mutations: {
+        initUser() { //初始化会员中心
+            let _this = this;
+            _this.commit('GetCookie', { cvalue: "id" });
+            _this.commit('GetCookie', { cvalue: 'eqLength' });
+            _this.state.eqLen = _this.state.cookieVals.eqLength;
+            let params = {
+                'id': _this.state.cookieVals.id,
+            }
+            let curParams = Qs.stringify(params);
+            axios.post('/zzjj-app/member/findById.do', curParams).then(response => {
+                if (response.data.isSuccess == 0) {
+                    _this.state.username = response.data.entity.nickname;
+                }
+            }).catch(error => {
+                alert("服务器返回数据错误");
+            })
+        },
+        initFamily() {
+            let _this = this;
+            _this.commit('GetCookie', { cvalue: "id" });
+            _this.commit('GetCookie', { cvalue: "houseId" });
+            let params = {
+                'memberId': _this.state.cookieVals.id,
+                'yzyMemberId': _this.state.cookieVals.houseId
+            }
+            let curParams = Qs.stringify(params);
+            axios.post('/zzjj-app/yzydeviceshare/findMyShare.do', curParams).then(response => {
+                if (response.data.isSuccess == 0) {
+                    _this.state.familyNum = response.data.data.length;
+                }
+            }).catch(error => {
+                alert("服务器返回数据错误");
+            })
+        },
         isLogin() { //获取登录状态
             this.commit('GetCookie', { cvalue: 'userStatus' });
             if (this.state.cookieVals.userStatus) {
@@ -305,6 +343,7 @@ const store = new Vuex.Store({
                 console.log('可用积分', response);
                 if (response.status == 200) {
                     _this.state.allIntegral = response.data.countPoint;
+                    storage.setStorage('allIntegral', response.data.countPoint, 1);
                     _this.state.signinRecord.length = 0;
                     response.data.data.map(function(item) {
                         _this.state.signinRecord.push(item);
@@ -391,8 +430,8 @@ const store = new Vuex.Store({
                 _this.state.continueTimes = 0;
             }
             if(_this.state.continueTimes == 0) { //未开始签到
-                _this.state.signinDays.splice(1, 1, '1');
-                _this.state.isSignIn = false;
+                // _this.state.signinDays.splice(1, 1, '1');
+                _this.state.isSignIn = true;
                 for (let i = 1; i < 6; i++) {
                     _this.state.integrals.splice(i, 1, '+' + (i + 4));
                 }
@@ -481,13 +520,29 @@ const store = new Vuex.Store({
             this.state.curDataArr['year'] = new Date().getFullYear();
             this.state.curDataArr['month'] = new Date().getMonth() + 1;
             this.state.curDataArr['date'] = new Date().getDate();
+
+            let prevYMD = [];
+            let prevDay = new Date(new Date().getTime() - 86400000); //最近一次签到时间的第二天
+            prevYMD['year'] = prevDay.getFullYear();
+            prevYMD['month'] = prevDay.getMonth() + 1;
+            prevYMD['date'] = prevDay.getDate();
+
             let nextYMD = [];
             let nextDay = new Date(this.state.signinRecord[0].createDate + 86400000); //最近一次签到时间的第二天
             nextYMD['year'] = nextDay.getFullYear();
             nextYMD['month'] = nextDay.getMonth() + 1;
             nextYMD['date'] = nextDay.getDate();
+
+            let nearYMD = [];
+            let nearDay = new Date(this.state.signinRecord[0].createDate); //最近一次签到时间
+            nearYMD['year'] = nearDay.getFullYear();
+            nearYMD['month'] = nearDay.getMonth() + 1;
+            nearYMD['date'] = nearDay.getDate();
+
             if (nextYMD.year == todayDate.year && nextYMD.month == todayDate.month && nextYMD.date == todayDate.date) { //今天未签
                 prefix = times > 3 ? 3 : times - 1;
+            } else if (nearYMD.year != prevYMD.year || nearYMD.month != prevYMD.month || nearYMD.date != prevYMD.date) { //连续签到已断
+                prefix = 0;
             } else { //今天已签
                 prefix = times - 1 > 3 ? 3 : times - 2 < 0 ? 0 : times - 2;
             }
@@ -502,7 +557,26 @@ const store = new Vuex.Store({
         },
         signIn() { //签到触发
             let _this = this;
-            let times = this.state.signinRecord[0].integral - 4;
+            let times;
+
+            let prevYMD = [];
+            let prevDay = new Date(new Date().getTime() - 86400000); //最近一次签到时间的第二天
+            prevYMD['year'] = prevDay.getFullYear();
+            prevYMD['month'] = prevDay.getMonth() + 1;
+            prevYMD['date'] = prevDay.getDate();
+
+            let nearYMD = [];
+            let nearDay = new Date(this.state.signinRecord[0].createDate); //最近一次签到时间
+            nearYMD['year'] = nearDay.getFullYear();
+            nearYMD['month'] = nearDay.getMonth() + 1;
+            nearYMD['date'] = nearDay.getDate();
+
+            if (nearYMD.year != prevYMD.year || nearYMD.month != prevYMD.month || nearYMD.date != prevYMD.date) { //连续签到已断
+                times = 1;
+            } else {
+                times = this.state.signinRecord[0].integral - 4;
+            }
+
             this.commit('GetCookie', { cvalue: 'id' })
             let params = {
                 'memberId': _this.state.cookieVals.id
@@ -775,7 +849,9 @@ const store = new Vuex.Store({
         },
         getToken() {
             let _this = this;
-            if (452872041) {
+            this.commit('GetCookie', { cvalue: 'user_id' });
+            this.commit('GetCookie', { cvalue: 'access_token' });
+            if (_this.state.cookieVals.user_id) {
                 let params = {
                     email: '2018030619252147527@sslj.com',
                     corp_id: '100fa4b41cb5c000',
@@ -783,7 +859,7 @@ const store = new Vuex.Store({
                 };
                 let curParams = JSON.stringify(params);
                 let config = {
-                    'Access-Token': 'OTcxMUI4QzQ4QkQzMUMzNEVBNDJDNkI0RUQyOEVDMDFEMEZENEM3QTEzRkNFNjcyMzBFQ0U2NTE3MDRDQjA5RQ=='
+                    'Access-Token': _this.state.cookieVals.access_token
                 };
                 axios.post('/v2/user_auth', curParams, config).then(response => {
                     if (response.status == 200) {
@@ -1398,6 +1474,8 @@ const store = new Vuex.Store({
                     _this.state.eqUl.push(item);
                 }
             });
+            _this.state.eqLen = _this.state.eqUl.length;
+            _this.commit('SetCookie', { cname: "eqLength", cvalue: _this.state.eqUl.length, exdays: 1 });
             return _this.state.eqUl;
         },
         emergency(ableData) {
