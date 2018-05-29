@@ -11,10 +11,10 @@
 						<img class="icon-address" :src="iconAddress" alt="">
 					</div>
 					<div class="info">
-						<p class="choice-address"><span class="address-info">收货地址:测试地址</span><span class="focus pull-right">默认</span></p>
+						<p class="choice-address"><span class="address-info">收货地址:{{ addressInfo.province + addressInfo.city + addressInfo.area + addressInfo.addressName }}</span><span class="focus pull-right">默认</span></p>
 						<p class="clear">
-							<span class="pull-left">收货人: 老冯</span>
-							<span class="pull-right">手机: 138xxxx8888</span>
+							<span class="pull-left">收货人: {{ addressInfo.userName }}</span>
+							<span class="pull-right">手机: {{ addressInfo.phone }}</span>
 						</p>
 					</div>
 					<div class="icon-footer">
@@ -24,17 +24,15 @@
 			</router-link>
 		</div>
 		<div class="goods-info white flex">
-			<div class="pic">
-				<img :src="product1" alt="">
-			</div>
+			<div class="pic" :style="'backgroundImage:url('+ curGiftInfo.imageUrl1 +')'"></div>
 			<div class="info">
-				<p>充电宝</p>
-				<p>1积分</p>
+				<p>{{ curGiftInfo.goodsName }}</p>
+				<p>{{ curGiftInfo.integral }}积分</p>
 			</div>
 		</div>
 		<div class="order-area flex white">
 			<div class="total">
-				<span class="text-red">合计: 1积分</span>
+				<span class="text-red">合计: {{ curGiftInfo.integral }}积分</span>
 			</div>
 			<button class="btn-order">去结算</button>
 		</div>
@@ -43,18 +41,28 @@
 
 <script>
 	import publicHead from '../../common/publicHeader'
+	import { mapState, mapMutations } from 'vuex'
 	export default {
 		data(){
 			return {
 				msg: '提交订单',
+				curGiftInfo: this.$storage.getStorage('giftList')[this.$route.params.cur],
 				addressLace: require('../../../assets/user/order/top_line.png'),
 				iconAddress: require('../../../assets/user/order/address.png'),
-				nextIcon: require('../../../assets/common/arrow_right.png'),
-				product1: require('../../../assets/user/integral/product1.jpg')
+				nextIcon: require('../../../assets/common/arrow_right.png')
 			}
 		},
 		components: {
 			publicHead
+		},
+		computed: {
+			...mapState(['addressInfo'])
+		},
+		methods: {
+			...mapMutations(['initOrder'])
+		},
+		created(){
+			this.initOrder();
 		}
 	}
 </script>
@@ -142,7 +150,13 @@
 		padding: .8rem;
 	}
 	.goods-info .pic {
-		width: 25%;
+		width: 5.5rem;
+		height: 5.5rem;
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: contain;
+		box-shadow: 0 0 10px #ccc;
+		margin-right: .9rem;
 	}
 	.goods-info img {
 		width: 100%;
@@ -151,7 +165,7 @@
 		width: 75%;
 		text-align: left;
 		font-size: .9rem;
-		line-height: 1.4rem;
+		line-height: 1.5rem;
 	}
 	.total {
 		width: 60%;

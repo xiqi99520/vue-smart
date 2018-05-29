@@ -8,7 +8,7 @@
 					<span>{{ item.name }}</span>
 					<span class="data">{{ item.data }}</span>
 				</p>
-				<div :class="[ 'pull-right', item.isagree ? 'btn-end' : 'btn-agree' ]" v-text=" item.isagree ? '已同意' : '同意' "></div>
+				<div :data-src="item.isagree" :class="[ 'pull-right', item.isagree ? 'btn-end' : 'btn-agree' ]" v-text=" item.isagree ? '已同意' : '同意' " @click="modifyFamilyStatus($event)"></div>
 			</li>
 		</ul>
 	</div>
@@ -16,6 +16,7 @@
 
 <script>
 	import publicHead from '../../common/publicHeader'
+	import { mapMutations } from 'vuex'
 	export default {
 		data() {
 			return {
@@ -39,6 +40,12 @@
 		},
 		components: {
 			publicHead
+		},
+		methods: {
+			...mapMutations(['initInvite', 'modifyFamilyStatus'])
+		},
+		created(){
+			this.initInvite();
 		}
 	}
 </script>

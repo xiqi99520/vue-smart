@@ -6,18 +6,18 @@
 				<img :src="noAddress" alt="">
 				<p>暂无地址~</p>
 			</div>
-			<div class="have-address flex">
+			<div class="have-address flex" v-for="(item, index) in addressListInfo">
 				<div class="icon-area">
 					<img class="icon-address" :src="iconAddress" alt="">
 				</div>
 				<div class="info">
-					<p class="choice-address"><span class="address-info">收货地址:测试地址</span><span class="focus pull-right">默认</span></p>
+					<p class="choice-address"><span class="address-info">收货地址:{{ item.province + item.city + item.area + item.addressName }}</span><span class="focus pull-right" v-if="item.isDefault == 0">默认</span></p>
 					<p class="clear">
-						<span class="pull-left">收货人: 老冯</span>
-						<span class="pull-right">手机: 138xxxx8888</span>
+						<span class="pull-left">收货人: {{ item.userName }}</span>
+						<span class="pull-right">手机: {{ item.phone }}</span>
 					</p>
 				</div>
-				<router-link to="/editAddress" class="icon-footer">
+				<router-link :to="{path: '/editAddress/' + index }" class="icon-footer">
 					<img :src="iconEdit" alt="">
 				</router-link>
 			</div>
@@ -28,6 +28,7 @@
 
 <script>
 	import publicHead from '../../common/publicHeader'
+	import { mapState, mapMutations } from 'vuex'
 	export default {
 		data(){
 			return {
@@ -42,6 +43,15 @@
 		},
 		components: {
 			publicHead
+		},
+		computed: {
+			...mapState(['addressListInfo'])
+		},
+		methods: {
+			...mapMutations(['addressList'])
+		},
+		created(){
+			this.addressList();
 		}
 	}
 </script>
@@ -80,8 +90,6 @@
 		background-size: 100% auto;
 		background-repeat: no-repeat;
 		background-position: top;
-		padding: 1.2rem .6rem 1rem .6rem;
-		border-bottom: 1px solid #f2f2f2;
 	}
 	.address .icon-address {
 		width: .9rem;
@@ -133,5 +141,9 @@
 	    margin-left: .6rem;
 	    position: relative;
 	    top: .3rem;
+	}
+	.have-address {
+		padding: 1.2rem .6rem 1rem .6rem;
+    	border-bottom: 1px solid #f2f2f2;
 	}
 </style>

@@ -21,7 +21,7 @@
 				<img :src="goods.imageUrl1" alt="">
 			</div>
 		</div>
-		<router-link to="/order" class="btn-exchange">立即兑换</router-link>
+		<router-link :to="{path: '/order/' + this.$route.query.cur }" class="btn-exchange">立即兑换</router-link>
 	</div>
 </template>
 

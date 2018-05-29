@@ -265,7 +265,7 @@ export default new Router({
 			name: 'GoodsDetail',
 			component: GoodsDetail
 		}, {
-			path: '/order',
+			path: '/order/:cur',
 			name: 'Order',
 			component: Order
 		}, {
@@ -273,7 +273,7 @@ export default new Router({
 			name: 'AddAddress',
 			component: AddAddress
 		},{
-			path: '/editAddress',
+			path: '/editAddress/:cur',
 			name: 'EditAddress',
 			component: EditAddress
 		}, {

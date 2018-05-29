@@ -42,7 +42,9 @@ const store = new Vuex.Store({
         recommendIntegrals: [],
         houseManagerList: [],
         username: '',
-        familyNum: ''
+        familyNum: '',
+        addressInfo: {'addressName':"加载中...",'area':"",'city':"",'createDate':"加载中...",'id':"加载中...",'isDefault':"加载中...",'jsonUpdateFlag':"加载中...",'memberId':"加载中...",'modifyDate':"加载中...",'mybatisRecordCount':'加载中...','orderNo':"加载中...",'phone':"加载中...",'province':"",'userName':"加载中..."},
+        addressListInfo: []
     },
     mutations: {
         initUser() { //初始化会员中心
@@ -57,23 +59,6 @@ const store = new Vuex.Store({
             axios.post('/zzjj-app/member/findById.do', curParams).then(response => {
                 if (response.data.isSuccess == 0) {
                     _this.state.username = response.data.entity.nickname;
-                }
-            }).catch(error => {
-                alert("服务器返回数据错误");
-            })
-        },
-        initFamily() {
-            let _this = this;
-            _this.commit('GetCookie', { cvalue: "id" });
-            _this.commit('GetCookie', { cvalue: "houseId" });
-            let params = {
-                'memberId': _this.state.cookieVals.id,
-                'yzyMemberId': _this.state.cookieVals.houseId
-            }
-            let curParams = Qs.stringify(params);
-            axios.post('/zzjj-app/yzydeviceshare/findMyShare.do', curParams).then(response => {
-                if (response.data.isSuccess == 0) {
-                    _this.state.familyNum = response.data.data.length;
                 }
             }).catch(error => {
                 alert("服务器返回数据错误");
@@ -166,7 +151,7 @@ const store = new Vuex.Store({
                 alert("服务器返回数据错误");
             })
         },
-        getRegisterCode(obj, data){ //注册获取验证码
+        getRegisterCode(obj, data) { //注册获取验证码
             let _this = this;
             var reg = /^[1][3,4,5,7,8][0-9]{9}$/;
             if (!reg.test(data.number) || !data.number) {
@@ -189,7 +174,7 @@ const store = new Vuex.Store({
                 alert("服务器返回数据错误");
             })
         },
-        submitRegister(obj, data){ //提交注册
+        submitRegister(obj, data) { //提交注册
             let _this = this;
             var reg = /^[1][3,4,5,7,8][0-9]{9}$/;
             if (!reg.test(data.number) || !data.number) {
@@ -238,7 +223,7 @@ const store = new Vuex.Store({
                 alert("服务器返回数据错误");
             })
         },
-        getFixCode(obj, data){ //修改密码获取验证码
+        getFixCode(obj, data) { //修改密码获取验证码
             let _this = this;
             var reg = /^[1][3,4,5,7,8][0-9]{9}$/;
             if (!reg.test(data.number) || !data.number) {
@@ -261,7 +246,7 @@ const store = new Vuex.Store({
                 alert("服务器返回数据错误");
             })
         },
-        submitFix(obj, data){ //提交修改
+        submitFix(obj, data) { //提交修改
             let _this = this;
             var reg = /^[1][3,4,5,7,8][0-9]{9}$/;
             if (!reg.test(data.number) || !data.number) {
@@ -326,7 +311,83 @@ const store = new Vuex.Store({
                 alert("服务器返回数据错误");
             })
         },
-        goodsArr(){
+        initOrder(){
+            let _this = this;
+            axios.get('/zzjj-app/receivingaddress/findDefaultAddress.do?memberId=82437').then(response => {
+                console.log('测试',response.data.entity);
+                if (response.data.isSuccess == 0) {
+                    _this.state.addressInfo = response.data.entity;
+                }
+            }).catch(error => {
+                alert("服务器返回数据错误");
+            })
+        },
+        addressList(){
+            let _this = this;
+            axios.get('/zzjj-app/receivingaddress/grid.do?pageSize=50&pageNo=1&memberId=82437').then(response => {
+                _this.state.addressListInfo.length = 0;
+                if (response.data.isSuccess == 0) {
+                    storage.setStorage('addressListInfo', response.data.data.rows, 1);
+                    response.data.data.rows.map((item) => {
+                        _this.state.addressListInfo.push(item);
+                    })
+                }
+            }).catch(error => {
+                alert("服务器返回数据错误");
+            })
+        },
+        initFamily() { //我的家人
+            let _this = this;
+            _this.commit('GetCookie', { cvalue: "id" });
+            _this.commit('GetCookie', { cvalue: "houseId" });
+            let params = {
+                'memberId': _this.state.cookieVals.id,
+                'yzyMemberId': _this.state.cookieVals.houseId
+            }
+            let curParams = Qs.stringify(params);
+            axios.post('/zzjj-app/yzydeviceshare/findMyShare.do', curParams).then(response => {
+                console.log('我的家人',response);
+                if (response.data.isSuccess == 0) {
+                    _this.state.familyNum = response.data.data.length;
+                }
+            }).catch(error => {
+                alert("服务器返回数据错误");
+            })
+        },
+        initInvite() { //家人邀请
+            let _this = this;
+            _this.commit('GetCookie', { cvalue: "id" });
+            let params = {
+                'memberId': _this.state.cookieVals.id
+            }
+            let curParams = Qs.stringify(params);
+            axios.post('/zzjj-app/yzyfamily/findBeFamily.do', curParams).then(response => {
+                console.log(response);return;
+                if (response.data.isSuccess == 0) {
+
+                }
+            }).catch(error => {
+                alert("服务器返回数据错误");
+            })
+        },
+        modifyFamilyStatus(obj, data) { //修改家人状态
+            console.log(data.target.attributes['data-src'].value);return;
+            let _this = this;
+            let params = {
+                'id': data.id,
+                'familyStatus': data.familyStatus
+            }
+            let curParams = Qs.stringify(params);
+            axios.post('/zzjj-app/yzyfamilylog/updateSave.do', curParams).then(response => {
+                console.log('修改家人状态',response);return;
+                if (response.data.isSuccess == 0) {
+
+                }
+            }).catch(error => {
+                alert("服务器返回数据错误");
+            })
+        },
+        goodsArr() {
             this.state.goodsList.length = 0;
             storage.getStorage('giftList').map((item) => {
                 this.state.goodsList.push(item);
@@ -357,7 +418,7 @@ const store = new Vuex.Store({
                 this.state.isblur = 0;
             })
         },
-        initHost(){
+        initHost() {
             this.commit('GetCookie', { cvalue: 'eqLength' });
             this.commit('GetCookie', { cvalue: 'user_id' });
             this.commit('GetCookie', { cvalue: 'access_token' });
@@ -372,7 +433,7 @@ const store = new Vuex.Store({
                 } else {
                     this.state.curOpacity = .5;
                     this.commit('signInTip', { msg: '您尚未绑定主机', status: 0 });
-                    setTimeout(function(){
+                    setTimeout(function() {
                         window.location.href = '/';
                     }, 1000)
                 }
@@ -381,7 +442,7 @@ const store = new Vuex.Store({
             })
         },
         delHost() {
-            if(this.state.curOpacity != 1) return;
+            if (this.state.curOpacity != 1) return;
             this.commit('GetCookie', { cvalue: 'hostId' });
             this.commit('GetCookie', { cvalue: 'user_id' });
             this.commit('GetCookie', { cvalue: 'access_token' });
@@ -397,7 +458,7 @@ const store = new Vuex.Store({
                 data: curParams
             }).then(response => {
                 this.commit('signInTip', { msg: '主机已删除', status: 1 });
-                setTimeout(function(){
+                setTimeout(function() {
                     window.location.href = '/';
                 }, 1000)
             }).catch(error => {
@@ -422,14 +483,14 @@ const store = new Vuex.Store({
             nextYMD['year'] = nextDay.getFullYear();
             nextYMD['month'] = nextDay.getMonth() + 1;
             nextYMD['date'] = nextDay.getDate();
-            if (nextYMD.year == today.year && nextYMD.month == today.month && nextYMD.date == today.date) {//连续签到几天,今天未签
+            if (nextYMD.year == today.year && nextYMD.month == today.month && nextYMD.date == today.date) { //连续签到几天,今天未签
                 _this.state.continueTimes = this.state.signinRecord[0].integral - 4;
-            } else if (nearYMD.year == today.year && nearYMD.month == today.month && nearYMD.date == today.date) {//连续签到几天,今天已签
+            } else if (nearYMD.year == today.year && nearYMD.month == today.month && nearYMD.date == today.date) { //连续签到几天,今天已签
                 _this.state.continueTimes = this.state.signinRecord[0].integral - 4;
             } else { //连续签到已断
                 _this.state.continueTimes = 0;
             }
-            if(_this.state.continueTimes == 0) { //未开始签到
+            if (_this.state.continueTimes == 0) { //未开始签到
                 // _this.state.signinDays.splice(1, 1, '1');
                 _this.state.isSignIn = true;
                 for (let i = 1; i < 6; i++) {
@@ -1136,7 +1197,7 @@ const store = new Vuex.Store({
         },
         addToUrl(obj, data) {
             let _this = this;
-                console.log(data);
+            console.log(data);
             data.datas.map(function(item, index) {
                 switch (item.DeviceId) {
                     case "0000":
@@ -1595,7 +1656,7 @@ const store = new Vuex.Store({
         }
     },
     getters: {
-        hostNum(state){
+        hostNum(state) {
             return state.cookieVals.eqLength;
         }
     }

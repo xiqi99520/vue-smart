@@ -5,30 +5,30 @@
 			<div class="edit-address flex">
 				<div class="title">收货人:</div>
 				<div class="is-enter">
-					<input type="text" placeholder="请输入您的姓名">
+					<input type="text" placeholder="请输入您的姓名" :value="addressListInfo[cur].userName">
 				</div>
 			</div>
 			<div class="edit-address flex">
 				<div class="title">联系电话:</div>
 				<div class="is-enter">
-					<input type="text" placeholder="请输入您的联系电话">
+					<input type="text" placeholder="请输入您的联系电话" :value="addressListInfo[cur].phone">
 				</div>
 			</div>
 			<div class="edit-address flex">
 				<div class="title">省市区:</div>
 				<div class="is-enter">
-					<v-distpicker ref="test" :province="select.province" :city="select.city" :area="select.area" @province="onChangeProvince" @city="onChangeCity" @area="onChangeArea"></v-distpicker>
+					<v-distpicker ref="test" :province="addressListInfo[cur].province || select.province" :city="addressListInfo[cur].city || select.city" :area="addressListInfo[cur].area || select.area" @province="onChangeProvince" @city="onChangeCity" @area="onChangeArea"></v-distpicker>
 				</div>
 				<img class="more" :src="nextIcon" alt="">
 			</div>
 			<div class="edit-address flex">
 				<div class="title">详细地址:</div>
 				<div class="is-enter">
-					<input type="text" placeholder="详细地址, 如: 街道/门牌号等">
+					<input type="text" placeholder="详细地址, 如: 街道/门牌号等" :value="addressListInfo[cur].addressName">
 				</div>
 			</div>
 			<div class="isdefault" @click="toggleChoose">
-				<img :src="[isChoose ? notChoose :choose]" alt=""> 设为默认地址
+				<img :src="[addressListInfo[cur].isdefault ? notChoose : choose]" alt=""> 设为默认地址
 			</div>
 		</div>
 		<div class="btn-group">
@@ -41,10 +41,13 @@
 <script>
 	import publicHead from '../../common/publicHeader'
 	import VDistpicker from 'v-distpicker'
+	import { mapState } from 'vuex'
 	export default {
 		data(){
 			return {
 				msg: '编辑地址',
+				cur: this.$route.params.cur,
+				addressListInfo: this.$storage.getStorage('addressListInfo'),
 				isChoose: true,
 				choose: require('../../../assets/user/integral/choose.png'),
 				notChoose: require('../../../assets/user/integral/not_choose.png'),
