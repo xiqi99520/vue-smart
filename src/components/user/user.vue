@@ -8,15 +8,15 @@
 			<p class="user-name">{{ username }}</p>
 			<div class="flex item">
 				<div class="trisection num">
-					<p>{{ eqLen }}</p>
+					<p>{{ eqLen || 0 }}</p>
 					<p class="name">设备</p>
 				</div>
 				<div class="trisection family">
-					<p>{{ familyNum }}</p>
+					<p>{{ familyNum || 0 }}</p>
 					<p class="name">家人</p>
 				</div>
 				<div class="trisection integral">
-					<p>{{ allIntegral }}</p>
+					<p>{{ allIntegral || 0 }}</p>
 					<p class="name">积分</p>
 				</div>
 			</div>

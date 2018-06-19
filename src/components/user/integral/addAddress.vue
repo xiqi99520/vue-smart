@@ -17,12 +17,12 @@
 						<span class="pull-right">手机: {{ item.phone }}</span>
 					</p>
 				</div>
-				<router-link :to="{path: '/editAddress/' + index }" class="icon-footer">
+				<router-link :to="{path: '/editAddress/' + index + '/' + item.id }" class="icon-footer">
 					<img :src="iconEdit" alt="">
 				</router-link>
 			</div>
 		</div>
-		<router-link to="/editAddress" class="btn-add">+ 添加地址</router-link>
+		<router-link to="/addNewAddress" class="btn-add">+ 添加地址</router-link>
 	</div>
 </template>
 

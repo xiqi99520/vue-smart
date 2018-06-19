@@ -336,6 +336,47 @@ const store = new Vuex.Store({
                 alert("服务器返回数据错误");
             })
         },
+        addNewAddress(obj, data) { //新增收货地址
+            let _this = this;
+            _this.commit('GetCookie', { cvalue: "id" });
+            let params = {
+                'memberId': _this.state.cookieVals.id,
+                'province': data.province,
+                'city': data.city,
+                'area': data.area,
+                'addressName': data.address,
+                'userName': data.username,
+                'phone': data.phonenum,
+                'isDefault': data.isdefault
+            }
+            let curParams = Qs.stringify(params);
+            axios.post('/zzjj-app/receivingaddress/addSave.do', curParams).then(response => {
+                if(response.status == 200){
+                    this.commit('signInTip', { msg: '添加地址成功', status: 1 });
+                    setTimeout(function() {
+                        window.location.href = './addAddress';
+                    }, 1000)
+                }
+            }).catch(error => {
+                alert("服务器返回数据错误");
+            })
+        },
+        delAddress(obj, id) {
+            let params = {
+                'id': id,
+            }
+            let curParams = Qs.stringify(params);
+            axios.post('/zzjj-app/receivingaddress/deleteById.do', curParams).then(response => {
+                if(response.status == 200){
+                    this.commit('signInTip', { msg: '删除地址成功', status: 1 });
+                    setTimeout(function() {
+                        window.location.href = '../../addAddress';
+                    }, 1000)
+                }
+            }).catch(error => {
+                alert("服务器返回数据错误");
+            })
+        },
         initFamily() { //我的家人
             let _this = this;
             _this.commit('GetCookie', { cvalue: "id" });

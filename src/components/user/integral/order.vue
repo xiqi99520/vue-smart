@@ -30,6 +30,32 @@
 				<p>{{ curGiftInfo.integral }}积分</p>
 			</div>
 		</div>
+		<div class="integral" style="overflow: hidden; display: block;">
+			<div class="integral-header flex">
+				<span class="t-left">您的积分</span>
+				<span class="t-right"><em id="integral">30</em>积分</span>
+			</div>
+			<div class="integral-enter">
+				<p>请输入所需抵扣积分</p>
+				<input type="text" id="inputs">
+			</div>
+			<div class="integral-rule">
+				<ul>
+					<li><span></span>1元=100积分</li>
+					<li><span></span>输入积分仅支持100的正整数倍</li>
+					<li><span></span>如您的积分不足100,可获取更多积分再兑换</li>
+					<li><span></span>如您选择积分+微信支付，但微信支付失败，平台暂时不会退回已扣积分，请知悉！</li>
+				</ul>
+			</div>
+		</div>
+		<div class="deduction-integral flex" id="deductionIntegral" style="opacity: 1;">
+			<span class="t-left half">抵扣积分</span>
+			<span class="t-right half"><em id="inputVal">0</em>积分</span>
+		</div>
+		<div class="pay-money flex" id="payMoney" style="opacity: 1;">
+			<span class="t-left half">应付金额</span>
+			<span class="t-right half">¥<em id="pay">29</em></span>
+		</div>
 		<div class="order-area flex white">
 			<div class="total">
 				<span class="text-red">合计: {{ curGiftInfo.integral }}积分</span>
@@ -126,6 +152,7 @@
 	.address-area {
 		min-height: 100vh;
 		background-color: #f2f2f2;
+		margin-bottom: 3.5rem;
 	}
 	.order-area {
 		width: 100%;
@@ -146,7 +173,7 @@
 		font-weight: bold;
 	}
 	.goods-info {
-		margin-top: .4rem;
+		margin-top: .5rem;
 		padding: .8rem;
 	}
 	.goods-info .pic {
@@ -196,5 +223,88 @@
 		display: inline-block;
 		font-size: 1.1rem;
 		margin-right: .4rem;
+	}
+	.flex {
+	    display: flex;
+	}
+	.integral, .deduction-integral {
+	    font-size: .9rem;
+	    background-color: #fff;
+	    margin-top: .5rem;
+	    padding: 0 1.3rem;
+	}
+	.integral-header {
+	    height: 3.5rem;
+	    line-height: 3.5rem;
+	}
+	.integral-header span {
+	    width: 50%;
+	    color: #333333;
+	}
+	.t-left {
+	    text-align: left;
+	}
+	.t-right {
+	    text-align: right;
+	}
+	em {
+	    font-style: normal;
+	}
+	.integral-enter p {
+	    height: 2rem;
+	    line-height: 2rem;
+	    color: #999999;
+	    text-align: left;
+	}
+	.integral-enter input {
+	    width: 100%;
+	    height: 2rem;
+	    border: 0;
+	    border-bottom: 1px solid #ddd;
+	    border-radius: 4px;
+	    padding-left: .4rem;
+	    outline: none;
+	}
+	.integral-rule {
+	    font-size: .8rem;
+	    color: #999999;
+	    text-align: left;
+	    line-height: 1.6rem;
+	    margin-top: 1rem;
+	    padding-bottom: 2rem;
+	    border-bottom: 1px solid #ededed;
+	}
+	.integral-rule li span {
+	    display: inline-block;
+	    width: .34rem;
+	    height: .34rem;
+	    background: url(../../../assets/user/order/point.png) no-repeat;
+	    background-size: .34rem .34rem;
+	    position: relative;
+	    top: -.1rem;
+	    margin-right: .4rem;
+	}
+	.deduction-integral {
+	    opacity: 0;
+	    height: 3.2rem;
+	    line-height: 3.2rem;
+	    border-bottom: 1px solid #ededed;
+	    -webkit-transition: .8s;
+	    transition: .8s;
+	    background-color: #fff;
+	}
+	.half {
+	    width: 50%;
+	}
+	.pay-money {
+	    opacity: 0;
+	    font-size: .9rem;
+	    background-color: #fff;
+	    padding: 0 1.3rem;
+	    height: 3.2rem;
+	    line-height: 3.2rem;
+	    border-bottom: 1px solid #ededed;
+	    -webkit-transition: .8s;
+	    transition: .8s;
 	}
 </style>

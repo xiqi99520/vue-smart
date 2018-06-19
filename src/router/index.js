@@ -56,6 +56,7 @@ const RecommendQrcode = r => require.ensure([], () => r(require('@/components/us
 const Host = r => require.ensure([], () => r(require('@/components/user/host')), 'User')
 
 const Integral = r => require.ensure([], () => r(require('@/components/user/integral/integral')), 'User')
+const Lottery = r => require.ensure([], () => r(require('@/components/user/integral/lottery')), 'User')
 const SignInRule = r => require.ensure([], () => r(require('@/components/user/integral/signInRule')), 'User')
 const GoodsList = r => require.ensure([], () => r(require('@/components/user/integral/goodsList')), 'User')
 const GoodsDetail = r => require.ensure([], () => r(require('@/components/user/integral/goodsDetail')), 'User')
@@ -63,6 +64,7 @@ const Order = r => require.ensure([], () => r(require('@/components/user/integra
 const AddAddress = r => require.ensure([], () => r(require('@/components/user/integral/addAddress')), 'User')
 const Schedule = r => require.ensure([], () => r(require('@/components/user/integral/schedule')), 'User')
 const EditAddress = r => require.ensure([], () => r(require('@/components/user/integral/editAddress')), 'User')
+const AddNewAddress = r => require.ensure([], () => r(require('@/components/user/integral/addNewAddress')), 'User')
 
 const Login = r => require.ensure([], () => r(require('@/components/user/login')), 'Login')
 const Log = r => require.ensure([], () => r(require('@/components/user/login/login')), 'Login')
@@ -253,6 +255,10 @@ export default new Router({
 			name: 'Integral',
 			component: Integral
 		}, {
+			path: '/lottery',
+			name: 'Lottery',
+			component: Lottery
+		},{
 			path: '/signInRule',
 			name: 'SignInRule',
 			component: SignInRule
@@ -273,9 +279,13 @@ export default new Router({
 			name: 'AddAddress',
 			component: AddAddress
 		},{
-			path: '/editAddress/:cur',
+			path: '/editAddress/:cur/:id',
 			name: 'EditAddress',
 			component: EditAddress
+		},{
+			path: '/addNewAddress',
+			name: 'AddNewAddress',
+			component: AddNewAddress
 		}, {
 			path: '/schedule',
 			name: 'Schedule',

@@ -25,7 +25,7 @@
                 </ul>
                 <div class="btn-group clear">
                     <button :class="['pull-left', !curSignIn ? 'is-sign-in' : '']" @click="startSignIn">签到</button>
-                    <button class="pull-right">抽奖</button>
+                    <button class="pull-right" @click="lottery">抽奖</button>
                 </div>
             </div>
         </div>
@@ -64,6 +64,9 @@ export default {
                 this.getIntegral();
                 return;
             }
+        },
+        lottery() {
+            this.$router.push('lottery');
         }
     },
     computed: {
@@ -78,7 +81,6 @@ export default {
     created() {
         this.getIntegral();
         this.initGifts();
-        console.log(new Date(1527235111000));
     },
     components: {
         layer

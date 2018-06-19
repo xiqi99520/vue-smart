@@ -6,34 +6,33 @@
 			<div class="edit-address flex">
 				<div class="title">收货人:</div>
 				<div class="is-enter">
-					<input type="text" placeholder="请输入您的姓名" :value="addressListInfo[cur].userName">
+					<input ref="username" type="text" placeholder="请输入您的姓名">
 				</div>
 			</div>
 			<div class="edit-address flex">
 				<div class="title">联系电话:</div>
 				<div class="is-enter">
-					<input type="text" placeholder="请输入您的联系电话" :value="addressListInfo[cur].phone">
+					<input ref="phonenum" type="text" placeholder="请输入您的联系电话">
 				</div>
 			</div>
 			<div class="edit-address flex">
 				<div class="title">省市区:</div>
 				<div class="is-enter">
-					<v-distpicker ref="test" :province="addressListInfo[cur].province || select.province" :city="addressListInfo[cur].city || select.city" :area="addressListInfo[cur].area || select.area" @province="onChangeProvince" @city="onChangeCity" @area="onChangeArea"></v-distpicker>
+					<v-distpicker ref="cityinfo" :province="select.province" :city="select.city" :area="select.area" @province="onChangeProvince" @city="onChangeCity" @area="onChangeArea"></v-distpicker>
 				</div>
 				<img class="more" :src="nextIcon" alt="">
 			</div>
 			<div class="edit-address flex">
 				<div class="title">详细地址:</div>
 				<div class="is-enter">
-					<input type="text" placeholder="详细地址, 如: 街道/门牌号等" :value="addressListInfo[cur].addressName">
+					<input ref="address" type="text" placeholder="详细地址, 如: 街道/门牌号等">
 				</div>
 			</div>
 			<div class="isdefault" @click="toggleChoose">
-				<img :src="[addressListInfo[cur].isdefault ? notChoose : choose]" alt=""> 设为默认地址
+				<img :src="[isChoose ? notChoose : choose]" alt=""> 设为默认地址
 			</div>
 		</div>
 		<div class="btn-group">
-			<div class="btn-del" @click="del">删除</div>
 			<div class="btn-save" @click="save">保存</div>
 		</div>
 	</div>
@@ -48,7 +47,6 @@
 		data(){
 			return {
 				msg: '编辑地址',
-				cur: this.$route.params.cur,
 				addressListInfo: this.$storage.getStorage('addressListInfo'),
 				isChoose: true,
 				choose: require('../../../assets/user/integral/choose.png'),
@@ -63,7 +61,7 @@
 			layer
 		},
 		methods: {
-			...mapMutations(['delAddress']),
+			...mapMutations(['addNewAddress']),
 			onChangeProvince(data) {
 		      this.select.province = data.value
 		    },
@@ -77,11 +75,15 @@
 		    	this.isChoose = !this.isChoose
 		    },
 			save(){
-				
-			},
-			del(){
-				let id = this.$route.params.id;
-				this.delAddress(id);
+				let isdefault = this.isChoose ? 1 : 0;
+				let province = this.$refs.cityinfo.province;
+				let city = this.$refs.cityinfo.city;
+				let area = this.$refs.cityinfo.area;
+				let address = this.$refs.address.value;
+				let username = this.$refs.username.value;
+				let phonenum = this.$refs.phonenum.value;
+				let dataObj = {province, city, area, address, username, phonenum, isdefault};
+				this.addNewAddress(dataObj);
 			}
 		}
 	}
