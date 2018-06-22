@@ -60,7 +60,7 @@
 			<div class="total">
 				<span class="text-red">合计: {{ curGiftInfo.integral }}积分</span>
 			</div>
-			<button class="btn-order">去结算</button>
+			<button class="btn-order" @click="toPay">去结算</button>
 		</div>
 	</div>
 </template>
@@ -85,7 +85,10 @@
 			...mapState(['addressInfo'])
 		},
 		methods: {
-			...mapMutations(['initOrder'])
+			...mapMutations(['initOrder']),
+			toPay(){
+				this.$router.push('/confirmPay')
+			}
 		},
 		created(){
 			this.initOrder();

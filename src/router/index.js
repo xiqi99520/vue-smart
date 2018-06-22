@@ -61,6 +61,7 @@ const SignInRule = r => require.ensure([], () => r(require('@/components/user/in
 const GoodsList = r => require.ensure([], () => r(require('@/components/user/integral/goodsList')), 'User')
 const GoodsDetail = r => require.ensure([], () => r(require('@/components/user/integral/goodsDetail')), 'User')
 const Order = r => require.ensure([], () => r(require('@/components/user/integral/order')), 'User')
+const ConfirmPay = r => require.ensure([], () => r(require('@/components/user/integral/confirmPay')), 'User')
 const AddAddress = r => require.ensure([], () => r(require('@/components/user/integral/addAddress')), 'User')
 const Schedule = r => require.ensure([], () => r(require('@/components/user/integral/schedule')), 'User')
 const EditAddress = r => require.ensure([], () => r(require('@/components/user/integral/editAddress')), 'User')
@@ -275,6 +276,10 @@ export default new Router({
 			name: 'Order',
 			component: Order
 		}, {
+			path: '/confirmPay',
+			name: 'ConfirmPay',
+			component: ConfirmPay
+		},  {
 			path: '/addAddress',
 			name: 'AddAddress',
 			component: AddAddress

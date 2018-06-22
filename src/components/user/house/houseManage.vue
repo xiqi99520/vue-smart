@@ -1,30 +1,33 @@
 <template>
 	<div>
+		<layer v-if="this.$store.state.isshow" :isStatus="this.$store.state.signInStatusNum" :msg="this.$store.state.signInStatus"></layer>
 		<publicHead :title="msg" :rightMenu="rightMenu" :toUrl="create"></publicHead>
 		<ul>
 			<li class="clear manage">
 				<p class="pull-left title">名称</p>
-				<span class="pull-right cur-house-name"><input type="text" :value="curName" /></span>
+				<span class="pull-right cur-house-name"><input ref="houseName" type="text" :value="curHouse.name" /></span>
 				<img class="pull-right arrow-right" :src="iconRight" alt="" />
 			</li>
 			<li class="clear manage">
 				<input class="uploadfile" id="file_input" @click="filechange" ref="myFiles" type="file" accept="image/jpeg,image/png,image/gif" />
 				<p class="pull-left title">图片</p>
 				<div class="pull-right cur-house-pic">
-					<img id="pic" :src="curHouseSrc" alt="" />
+					<img ref="avatar" id="pic" :src="curHouse.imgUrl || curHouseSrc" alt="" />
 				</div>
 				<img class="pull-right arrow-right" :src="iconRight" alt="" />
 			</li>
 		</ul>
 		<div class="btn-group">
-			<button class="btn">保存</button>
-			<button class="btn">删除</button>
+			<button class="btn" @click="saveFunc">保存</button>
+			<button class="btn" @click="delFunc">删除</button>
 		</div>
 	</div>
 </template>
 
 <script>
 	import publicHead from '../../common/publicHeader'
+	import layer from '../../common/layer'
+	import { mapMutations } from 'vuex'
 	export default {
 		data() {
 			return {
@@ -36,14 +39,19 @@
 			}
 		},
 		components: {
-			publicHead
+			publicHead,
+			layer
 		},
 		computed: {
 			curName(){
 				return this.$store.state.houseManagerList[this.$route.params.name].name;
+			},
+			curHouse(){
+				return this.$storage.getStorage('houseListData')[0];
 			}
 		},
 		methods: {
+			...mapMutations(['saveHouse', 'delHouse']),
 			/*handkeFileChange() { //图片上传 - 老方法
 				let oFile = this.$refs.myFiles.files;
 				if(!oFile || !oFile[0]){  
@@ -76,6 +84,16 @@
 			    reader.onload = function(e){ 
 			    	document.getElementById('pic').src = this.result;
 			    } 
+			},
+			saveFunc(){
+				let id = this.$route.params.name;
+				let avatarPic = this.$refs.avatar.src;
+				let houseName = this.$refs.houseName.value;
+				this.saveHouse({id, avatarPic, houseName});
+			},
+			delFunc(){
+				let id = this.$route.params.name;
+				this.delHouse(id);
 			}
 		}
 	}

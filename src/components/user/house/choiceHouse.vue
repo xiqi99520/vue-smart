@@ -3,7 +3,7 @@
 		<publicHead :title="msg" :rightMenu="rightMenu" :toUrl="create"></publicHead>
 		<ul>
 			<li class="clear choice" v-for="(item,index) in houseManagerList">
-				<router-link :to="{path: '/houseManage/'+ index }"></router-link>
+				<router-link :to="{path: '/houseManage/'+ index}"></router-link>
 				<img class="pull-left house-avatar" :src="[item.imgUrl ? item.imgUrl : defaultPic]" alt="房屋头像">
 				<p class="pull-left title">{{ item.name }}{{ item.isDefault == 0 ? '(默认)' : '' }}</p>
 				<img class="pull-right arrow-right" :src="iconRight" alt="" />

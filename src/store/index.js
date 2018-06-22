@@ -44,7 +44,10 @@ const store = new Vuex.Store({
         username: '',
         familyNum: '',
         addressInfo: {'addressName':"加载中...",'area':"",'city':"",'createDate':"加载中...",'id':"加载中...",'isDefault':"加载中...",'jsonUpdateFlag':"加载中...",'memberId':"加载中...",'modifyDate':"加载中...",'mybatisRecordCount':'加载中...','orderNo':"加载中...",'phone':"加载中...",'province':"",'userName':"加载中..."},
-        addressListInfo: []
+        addressListInfo: [],
+        houseList: [],
+        isShowToggle: 0,
+        avatarEle: ''
     },
     mutations: {
         initUser() { //初始化会员中心
@@ -59,6 +62,118 @@ const store = new Vuex.Store({
             axios.post('/zzjj-app/member/findById.do', curParams).then(response => {
                 if (response.data.isSuccess == 0) {
                     _this.state.username = response.data.entity.nickname;
+                }
+            }).catch(error => {
+                alert("服务器返回数据错误");
+            })
+        },
+        initHouses() {//初始化获取所有房屋
+            var _this = this;
+            _this.commit('GetCookie', { cvalue: "id" });
+            let params = {
+                'memberId': _this.state.cookieVals.id
+            }
+            let curParams = Qs.stringify(params);
+            axios.post('/zzjj-app/account/getMemberAllAccount.do', curParams).then(response => {
+                if (response.data.isSuccess == 0 && response.data.accountList.length > 0) {
+                    _this.state.houseList.length = 0;
+                    response.data.accountList.map(function(item, index) {
+                        _this.state.houseList.push(item);
+                    })
+                } else {
+                    console.log('获取数据失败或数据列表为空');
+                }
+            }).catch(error => {
+                alert("服务器返回数据错误");
+            })
+        },
+        saveHouse(obj, data){//保存房屋修改
+            let _this = this;
+            let allHouseInfo = storage.getStorage('houseListData');
+            let params = {
+                'id': allHouseInfo[data.id].id,
+                'imgUrl': data.avatarPic,
+                'name': data.houseName,
+                'sn': allHouseInfo[data.id].sn,
+                'uid': allHouseInfo[data.id].uid
+            }
+            let curParams = Qs.stringify(params);
+            axios.post('/zzjj-app/account/updateSave.do', curParams).then(response => {
+                if (response.data.isSuccess == 0) {
+                    _this.commit('signInTip', { msg: '保存修改成功', status: 1 });
+                    setTimeout(function(){
+                        window.location.href = "/choiceHouse";
+                    }, 1500)
+                } else {
+                    console.log('获取数据失败或数据列表为空');
+                }
+            }).catch(error => {
+                alert("服务器返回数据错误");
+            })
+        },
+        createHouse(obj, data){//创建房屋修改
+            var _this = this;
+            _this.commit('GetCookie', { cvalue: "id" });
+            let params = {
+                'memberId': _this.state.cookieVals.id,
+                'name': data.houseName,
+                'imgUrl': data.avatarPic
+            }
+            let curParams = Qs.stringify(params);
+            axios.post('/zzjj-app/account/addSave.do', curParams).then(response => {
+                if (response.data.isSuccess == 0) {
+                    _this.commit('signInTip', { msg: '创建成功', status: 1 });
+                    setTimeout(function(){
+                        window.location.href = "/choiceHouse";
+                    }, 1500)
+                } else {
+                    console.log('获取数据失败或数据列表为空');
+                }
+            }).catch(error => {
+                alert("服务器返回数据错误");
+            })
+        },
+        delHouse(obj, id){//删除房屋
+            let _this = this;
+            let allHouseInfo = storage.getStorage('houseListData');
+            if(allHouseInfo[id].isDefault == 0){
+                alert('当前为默认房屋，不可删除！');
+                return;
+            }
+            let params = {
+                'id': allHouseInfo[id].id,
+            }
+            let curParams = Qs.stringify(params);
+            axios.post('/zzjj-app/account/updateSave.do', curParams).then(response => {
+                if (response.data.isSuccess == 0) {
+                    _this.commit('signInTip', { msg: '删除成功', status: 1 });
+                    setTimeout(function(){
+                        window.location.href = "/choiceHouse";
+                    }, 1500)
+                } else {
+                    console.log('获取数据失败或数据列表为空');
+                }
+            }).catch(error => {
+                alert("服务器返回数据错误");
+            })
+        },
+        toggleHouse(obj, data) {//切换房屋
+            var _this = this;
+            _this.commit('GetCookie', { cvalue: "id" });
+            let params = {
+                'memberId': _this.state.cookieVals.id,
+                'accountId': data.id
+            }
+            let curParams = Qs.stringify(params);
+            axios.post('/zzjj-app/account/changeDefaultAccount.do', curParams).then(response => {
+                if (response.data.isSuccess == 0) {
+                    _this.commit('signInTip', { msg: '切换房间成功', status: 1 });
+                    setTimeout(function(){
+                        _this.state.isShowToggle = 0;
+                        _this.state.avatarEle = data.curImg;
+                    }, 1500)
+                } else {
+                    console.log('获取数据失败或数据列表为空');
                 }
             }).catch(error => {
                 alert("服务器返回数据错误");
@@ -742,12 +857,13 @@ const store = new Vuex.Store({
         initHouseList() { //获取房屋管理列表
             var _this = this;
             _this.commit('GetCookie', { cvalue: "id" });
+            console.log(123123);
             let params = {
                 'memberId': _this.state.cookieVals.id
             }
             let curParams = Qs.stringify(params);
             axios.post('/zzjj-app/account/getMemberAllAccount.do', curParams).then(response => {
-                console.log('房屋列表', response);
+                storage.setStorage('houseListData', response.data.accountList, 1);
                 if (response.data.isSuccess == 0) {
                     _this.state.houseManagerList.length = 0;
                     response.data.accountList.map((item) => {

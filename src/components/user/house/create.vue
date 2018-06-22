@@ -1,29 +1,32 @@
 <template>
 	<div>
+		<layer v-if="this.$store.state.isshow" :isStatus="this.$store.state.signInStatusNum" :msg="this.$store.state.signInStatus"></layer>
 		<publicHead :title="msg"></publicHead>
 		<ul>
 			<li class="clear manage">
 				<p class="pull-left title">名称</p>
-				<input type="text" class="pull-right cur-house-name" />
+				<input ref="houseName" type="text" class="pull-right cur-house-name" />
 				<img class="pull-right arrow-right" :src="iconRight" alt="" />
 			</li>
 			<li class="clear manage">
 				<input class="uploadfile" id="file_input" @click="filechange" ref="myFiles" type="file" accept="image/jpeg,image/png,image/gif" />
 				<p class="pull-left title">图片</p>
 				<div class="pull-right cur-house-pic">
-					<img id="pic" :src="curHouseSrc" alt="" />
+					<img ref="avatar" id="pic" :src="curHouseSrc" alt="" />
 				</div>
 				<img class="pull-right arrow-right" :src="iconRight" alt="" />
 			</li>
 		</ul>
 		<div class="btn-group">
-			<button class="btn">创建</button>
+			<button class="btn" @click="createFunc">创建</button>
 		</div>
 	</div>
 </template>
 
 <script>
 	import publicHead from '../../common/publicHeader'
+	import layer from '../../common/layer'
+	import { mapMutations } from 'vuex'
 	export default {
 		data() {
 			return {
@@ -34,9 +37,11 @@
 			}
 		},
 		components: {
-			publicHead
+			publicHead,
+			layer
 		},
 		methods: {
+			...mapMutations(['createHouse']),
 			/*handkeFileChange() { //图片上传 - 老方法
 				let oFile = this.$refs.myFiles.files;
 				if(!oFile || !oFile[0]){  
@@ -69,6 +74,11 @@
 			    reader.onload = function(e){ 
 			    	document.getElementById('pic').src = this.result;
 			    } 
+			},
+			createFunc(){
+				let avatarPic = this.$refs.avatar.src;
+				let houseName = this.$refs.houseName.value;
+				this.createHouse({avatarPic, houseName});
 			}
 		}
 	}

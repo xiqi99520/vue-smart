@@ -2,6 +2,7 @@
     <div>
         <div class="index" :style="bgStyle">
             <top></top>
+            <moreHouse v-show="isShowToggle"></moreHouse>
             <basicData></basicData>
             <router-view :curUrl="curUrl"></router-view>
         </div>
@@ -11,8 +12,10 @@
 
 <script>
     import top from '../common/headerModule'
+    import moreHouse from '../common/moreHouse'
     import basicData from '../common/basicData'
     import indexnav from '../common/navFooter'
+    import { mapState } from 'vuex'
     export default {
         name: 'Index',
         data () {
@@ -26,9 +29,11 @@
         components: {
             top,
             basicData,
-            indexnav
+            indexnav,
+            moreHouse
         },
         computed: {
+            ...mapState(['isShowToggle']),
             curUrl() {
                 switch( this.$route.fullPath ) {
                     case '/' :
