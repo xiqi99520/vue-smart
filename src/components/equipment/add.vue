@@ -1,11 +1,11 @@
 <template>
 	<div>
-		<publicHead :title="msg"></publicHead>
+		<publicHead :title="'添加' + equipmentArr.title || msg"></publicHead>
 		<div class="host">
-			<img :src="hostPic" alt="">
+			<img :src="equipmentArr.src1" alt="">
 		</div>
 		<div class="instructions">
-			<p>1、请将网关连接电源。2、用网线把路由器的LAN口和网关的LAN口相连。3、扫描网关底部贴有的二维码。</p>
+			<p v-html="equipmentArr.desc"></p>
 		</div>
 		<div class="footer">
 			<div class="is-agree"><img :src="[ isAgree ? agree : unagree ]" alt="" @click="toggle">已确定上述操作</div>
@@ -19,7 +19,7 @@
 	export default {
 		data(){
 			return {
-				msg: '添加主机',
+				msg: '添加设备',
 				agree: require('../../assets/common/choose.png'),
 				unagree: require('../../assets/common/not_choose.png'),
 				hostPic: require('../../assets/equipment/homehost@3x.png'),
@@ -29,6 +29,9 @@
 		computed: {
 			curOpacity(){
 				return this.isAgree ? 1 : .5;
+			},
+			equipmentArr(){
+				return this.$storage.getStorage('equipmentArr')[this.$route.params.cur];
 			}
 		},
 		components: {

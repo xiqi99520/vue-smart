@@ -136,7 +136,7 @@ export default new Router({
 			name: 'List',
 			component: List
 		}, {
-			path: '/add',
+			path: '/add/:cur',
 			name: 'Add',
 			component: Add
 		}, {

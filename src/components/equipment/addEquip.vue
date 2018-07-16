@@ -61,8 +61,6 @@ export default {
 
             var newMsg = data.split("GT");
             var arrayMsg = newMsg[1].split("pass");
-            console.log(newMsg);
-            console.log(arrayMsg);
             return;
 
             let param = {
